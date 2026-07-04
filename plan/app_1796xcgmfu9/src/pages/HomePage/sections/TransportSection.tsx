@@ -1,0 +1,181 @@
+import { motion } from 'framer-motion';
+import { Plane, Train, Clock, MapPin, ArrowRight, Ticket } from 'lucide-react';
+import { MOCK_TRANSPORT, type ITransport } from '@/data/transport';
+
+const TRANSPORT_ICON: Record<ITransport['type'], typeof Plane> = {
+  flight: Plane,
+  train: Train,
+};
+
+const TYPE_LABEL: Record<ITransport['type'], string> = {
+  flight: '去程 · 航班',
+  train: '返程 · 火车',
+};
+
+const container = {
+  hidden: {},
+  visible: { transition: { staggerChildren: 0.15, delayChildren: 0.1 } },
+};
+
+const card = {
+  hidden: { opacity: 0, y: 30 },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: [0.16, 1, 0.3, 1] as const } },
+};
+
+export default function TransportSection() {
+  return (
+    <div className="w-full max-w-3xl mx-auto">
+      {/* Section Header */}
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true, margin: '-80px' }}
+        transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] as const }}
+        className="mb-12 md:mb-16"
+      >
+        <p className="text-xs font-bold uppercase tracking-[0.25em] text-blue-600 mb-4">
+          Transport
+        </p>
+        <h2 className="text-4xl md:text-5xl font-light text-slate-900 serif-font tracking-tight">
+          往返交通
+        </h2>
+        <p className="mt-4 text-lg font-light leading-relaxed text-slate-500 max-w-lg">
+          去程深夜航班节省白天时间，返程硬卧夕发朝至，最大化游玩效率
+        </p>
+      </motion.div>
+
+      {/* Transport Cards */}
+      <motion.div
+        variants={container}
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true, margin: '-60px' }}
+        className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12"
+      >
+        {MOCK_TRANSPORT.map((t) => {
+          const Icon = TRANSPORT_ICON[t.type];
+          const isFlight = t.type === 'flight';
+          return (
+            <motion.div
+              key={t.id}
+              variants={card}
+              whileHover={{ y: -6, transition: { duration: 0.35 } }}
+              className="group relative overflow-hidden rounded-[3rem] bg-white border border-slate-100 shadow-sm hover:shadow-[0_25px_60px_-15px_rgba(0_0_0_0.10)] transition-shadow duration-500"
+            >
+              {/* Top decorative stripe */}
+              <div
+                className={`h-1.5 w-full ${
+                  isFlight
+                    ? 'bg-gradient-to-r from-slate-900 via-blue-600 to-slate-900/30'
+                    : 'bg-gradient-to-r from-slate-900 via-lime-400 to-slate-900/30'
+                }`}
+              />
+
+              <div className="p-8 md:p-10">
+                {/* Header row */}
+                <div className="flex items-center justify-between mb-8">
+                  <div className="flex items-center gap-3">
+                    <div
+                      className={`size-11 rounded-2xl flex items-center justify-center ${
+                        isFlight
+                          ? 'bg-blue-50 text-blue-600'
+                          : 'bg-lime-50 text-lime-600'
+                      }`}
+                    >
+                      <Icon className="size-5" />
+                    </div>
+                    <div>
+                      <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-slate-400">
+                        {TYPE_LABEL[t.type]}
+                      </p>
+                      <p className="text-lg font-bold text-slate-800 serif-font">{t.code}</p>
+                    </div>
+                  </div>
+                  <span
+                    className={`text-[10px] font-bold uppercase tracking-[0.2em] px-4 py-1.5 rounded-full ${
+                      isFlight
+                        ? 'bg-blue-50 text-blue-700'
+                        : 'bg-lime-50 text-lime-700'
+                    }`}
+                  >
+                    {t.seatClass}
+                  </span>
+                </div>
+
+                {/* Route display — ticket-style */}
+                <div className="relative flex items-center justify-between mb-8 px-1">
+                  {/* Departure */}
+                  <div className="text-center">
+                    <p className="text-4xl md:text-5xl font-light tracking-tight text-slate-900 tabular-nums serif-font">
+                      {t.departureTime}
+                    </p>
+                    <p className="text-xs font-medium text-slate-400 mt-2 uppercase tracking-wider">
+                      {t.route.split(' → ')[0]}
+                    </p>
+                  </div>
+
+                  {/* Arrow + duration */}
+                  <div className="flex flex-col items-center gap-2">
+                    <div className="flex items-center gap-1">
+                      <span className="block w-8 md:w-12 h-px bg-slate-200" />
+                      <ArrowRight className="size-3 text-slate-300 shrink-0" />
+                      <span className="block w-8 md:w-12 h-px bg-slate-200" />
+                    </div>
+                    <span className="text-[10px] font-bold text-slate-400 uppercase tracking-[0.25em]">
+                      {t.duration}
+                    </span>
+                  </div>
+
+                  {/* Arrival */}
+                  <div className="text-center">
+                    <p className="text-4xl md:text-5xl font-light tracking-tight text-slate-900 tabular-nums serif-font">
+                      {t.arrivalTime.replace(' (+1天)', '')}
+                    </p>
+                    <p className="text-xs font-medium text-slate-400 mt-2 uppercase tracking-wider">
+                      {t.route.split(' → ')[1]}
+                    </p>
+                  </div>
+                </div>
+
+                {/* Divider — ticket perforation style */}
+                <div className="relative mb-6">
+                  <div className="border-t border-dashed border-slate-200" />
+                  <div className="absolute -top-2.5 left-0 size-5 rounded-full bg-slate-50 border border-slate-200" />
+                  <div className="absolute -top-2.5 right-0 size-5 rounded-full bg-slate-50 border border-slate-200" />
+                </div>
+
+                {/* Details row */}
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-5 text-xs font-medium text-slate-400">
+                    <span className="flex items-center gap-1.5">
+                      <Clock className="size-3" />
+                      {t.arrivalTime.includes('+1天') ? '次日抵达' : '当日抵达'}
+                    </span>
+                    <span className="flex items-center gap-1.5">
+                      <MapPin className="size-3" />
+                      {t.route}
+                    </span>
+                  </div>
+                  <div className="text-right">
+                    <p className="text-3xl font-light text-slate-900 tabular-nums serif-font">
+                      ¥{t.price}
+                    </p>
+                    <p className="text-[10px] font-medium text-slate-400 uppercase tracking-wider">
+                      {t.priceNote}
+                    </p>
+                  </div>
+                </div>
+
+                {/* Note */}
+                <p className="mt-5 text-xs text-slate-400 leading-relaxed border-t border-slate-100 pt-4">
+                  <Ticket className="size-3 inline mr-1.5 -mt-px" />
+                  {t.note}
+                </p>
+              </div>
+            </motion.div>
+          );
+        })}
+      </motion.div>
+    </div>
+  );
+}
