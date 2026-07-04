@@ -1,0 +1,8 @@
+{
+  "name": "nanjingplan",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "build": "cd app_1796xcgmfu9 && npm install --legacy-peer-deps && npx vite build --outDir ../dist"
+  }
+}
