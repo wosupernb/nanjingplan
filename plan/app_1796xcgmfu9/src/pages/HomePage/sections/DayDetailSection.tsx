@@ -5,7 +5,6 @@ import { Image } from '@/components/ui/image';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { MOCK_ITINERARY, type IItineraryDay, type IItinerarySpot } from '@/data/itinerary';
-import { UniversalLink } from '@lark-apaas/client-toolkit-lite';
 
 // ── 景点详细路线数据 ──────────────────────────────────
 interface IRouteStep {
@@ -380,16 +379,12 @@ function RoutePanel({ spot }: { spot: IItinerarySpot }) {
               )}
 
               {/* 一键导航按钮 */}
-              <UniversalLink
-                to={navUrl}
-                target="_blank"
-                rel="noreferrer"
-                className="flex w-full items-center justify-center gap-2 rounded-2xl bg-slate-700 px-6 py-3 text-sm font-bold text-white shadow-lg transition-all duration-300 hover:bg-slate-800 hover:shadow-xl hover:-translate-y-0.5"
+              <a href={navUrl} target="_blank" rel="noreferrer" className="flex w-full items-center justify-center gap-2 rounded-2xl bg-slate-700 px-6 py-3 text-sm font-bold text-white shadow-lg transition-all duration-300 hover:bg-slate-800 hover:shadow-xl hover:-translate-y-0.5"
               >
                 <Navigation className="size-4" />
                 一键导航到「{spot.name}」
                 <ExternalLink className="size-3 opacity-60" />
-              </UniversalLink>
+              </a>
             </div>
           </motion.div>
         )}
@@ -450,15 +445,11 @@ function SpotCard({ spot, index }: { spot: IItinerarySpot; index: number }) {
                     {spot.transport}
                   </span>
                   {routeData && (
-                    <UniversalLink
-                      to={getAmapNavUrl(spot.name, routeData.coordinates.lng, routeData.coordinates.lat)}
-                      target="_blank"
-                      rel="noreferrer"
-                      className="flex items-center gap-1 rounded-full bg-slate-100 px-2.5 py-0.5 text-[10px] font-bold uppercase tracking-widest text-slate-500 transition-colors hover:bg-slate-200"
+                    <a href={getAmapNavUrl(spot.name, routeData.coordinates.lng, routeData.coordinates.lat)} target="_blank" rel="noreferrer" className="flex items-center gap-1 rounded-full bg-slate-100 px-2.5 py-0.5 text-[10px] font-bold uppercase tracking-widest text-slate-500 transition-colors hover:bg-slate-200"
                     >
                       <Navigation className="size-3" />
                       导航
-                    </UniversalLink>
+                    </a>
                   )}
                 </div>
               </div>

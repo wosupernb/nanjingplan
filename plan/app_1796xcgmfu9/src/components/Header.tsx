@@ -1,5 +1,4 @@
 import { useState, useEffect, useCallback } from 'react';
-import { NavLink } from '@lark-apaas/client-toolkit-lite';
 import { Menu, X } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
@@ -45,9 +44,8 @@ export default function Header() {
       )}
     >
       <div className="container mx-auto px-6 md:px-12 flex items-center justify-between">
-        {/* Logo — serif 品牌名 + tracking-widest */}
-        <NavLink
-          to="#hero"
+        <a
+          href="#hero"
           className="flex items-center gap-3 shrink-0"
           onClick={closeMobile}
         >
@@ -57,29 +55,20 @@ export default function Header() {
           <span className="hidden sm:inline text-[10px] font-bold uppercase tracking-[0.3em] text-slate-400">
             Travel Guide
           </span>
-        </NavLink>
+        </a>
 
-        {/* Desktop Nav — uppercase tracking-widest */}
         <nav className="hidden md:flex items-center gap-1">
           {NAV_ITEMS.map((item) => (
-            <NavLink
+            <a
               key={item.anchor}
-              to={item.anchor}
-              className={({ isActive }) =>
-                cn(
-                  'px-4 py-2 text-sm uppercase tracking-widest font-medium transition-colors duration-300',
-                  isActive
-                    ? 'text-slate-700'
-                    : 'text-slate-600 hover:text-slate-700'
-                )
-              }
+              href={item.anchor}
+              className="px-4 py-2 text-sm uppercase tracking-widest font-medium transition-colors duration-300 text-slate-600 hover:text-slate-700"
             >
               {item.label}
-            </NavLink>
+            </a>
           ))}
         </nav>
 
-        {/* Mobile Menu Button */}
         <Button
           variant="ghost"
           size="icon"
@@ -91,26 +80,18 @@ export default function Header() {
         </Button>
       </div>
 
-      {/* Mobile Nav Overlay */}
       {mobileOpen && (
         <nav className="md:hidden bg-white/95 backdrop-blur-xl border-t border-slate-100">
           <div className="px-6 py-4 space-y-1">
             {NAV_ITEMS.map((item) => (
-              <NavLink
+              <a
                 key={item.anchor}
-                to={item.anchor}
+                href={item.anchor}
                 onClick={closeMobile}
-                className={({ isActive }) =>
-                  cn(
-                    'block px-4 py-3 text-sm uppercase tracking-widest font-medium rounded-2xl transition-colors duration-300',
-                    isActive
-                      ? 'text-slate-700 bg-slate-100'
-                      : 'text-slate-600 hover:text-slate-700 hover:bg-slate-50'
-                  )
-                }
+                className="block px-4 py-3 text-sm uppercase tracking-widest font-medium rounded-2xl transition-colors duration-300 text-slate-600 hover:text-slate-700 hover:bg-slate-50"
               >
                 {item.label}
-              </NavLink>
+              </a>
             ))}
           </div>
         </nav>

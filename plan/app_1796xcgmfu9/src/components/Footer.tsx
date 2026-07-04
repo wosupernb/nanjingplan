@@ -1,8 +1,15 @@
 import { motion } from 'framer-motion';
-import { UniversalLink } from '@lark-apaas/client-toolkit-lite';
 
 export default function Footer() {
   const currentYear = new Date().getFullYear();
+
+  const navItems = [
+    { label: '行程总览', href: '#overview' },
+    { label: '逐日详情', href: '#day1' },
+    { label: '交通票务', href: '#transport' },
+    { label: '预约提醒', href: '#booking' },
+    { label: '避坑指南', href: '#tips' },
+  ];
 
   return (
     <footer className="w-full bg-white border-t border-slate-100">
@@ -14,7 +21,6 @@ export default function Footer() {
           transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] as const }}
           className="grid grid-cols-1 md:grid-cols-3 gap-12"
         >
-          {/* 品牌信息 */}
           <div className="space-y-4">
             <h3 className="text-2xl font-light tracking-widest text-slate-900" style={{ fontFamily: "'Noto Serif SC', serif" }}>
               南京三日游
@@ -24,25 +30,23 @@ export default function Footer() {
             </p>
           </div>
 
-          {/* 快速链接 */}
           <div className="space-y-4">
             <p className="text-xs font-bold uppercase tracking-[0.2em] text-slate-400">
               快速导航
             </p>
             <div className="grid grid-cols-2 gap-2">
-              {['行程总览', '逐日详情', '交通票务', '预约提醒', '避坑指南'].map((item) => (
-                <UniversalLink
-                  key={item}
-                  to={`#${item === '行程总览' ? 'overview' : item === '逐日详情' ? 'day1' : item === '交通票务' ? 'transport' : item === '预约提醒' ? 'booking' : 'tips'}`}
+              {navItems.map((item) => (
+                <a
+                  key={item.label}
+                  href={item.href}
                   className="text-sm text-slate-500 hover:text-blue-600 transition-colors duration-200"
                 >
-                  {item}
-                </UniversalLink>
+                  {item.label}
+                </a>
               ))}
             </div>
           </div>
 
-          {/* 社交媒体 */}
           <div className="space-y-4">
             <p className="text-xs font-bold uppercase tracking-[0.2em] text-slate-400">
               分享给朋友
@@ -85,7 +89,6 @@ export default function Footer() {
           </div>
         </motion.div>
 
-        {/* 底部版权 */}
         <div className="mt-12 pt-8 border-t border-slate-100 flex flex-col md:flex-row items-center justify-between gap-4">
           <p className="text-xs font-bold uppercase tracking-[0.2em] text-slate-400">
             &copy; {currentYear} 南京三日游攻略 · 学生党极致省钱版
