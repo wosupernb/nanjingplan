@@ -1,23 +1,10 @@
-import { motion } from 'framer-motion';
 import { Calendar, Clock, Bell } from 'lucide-react';
 import { MOCK_BOOKING_REMINDERS, type IBookingReminder } from '@/data/booking';
-
-const container = {
-  hidden: {},
-  visible: { transition: { staggerChildren: 0.12 } },
-};
-
-const itemVariant = {
-  hidden: { opacity: 0, x: -20 },
-  visible: { opacity: 1, x: 0, transition: { duration: 0.5, ease: [0.16, 1, 0.3, 1] as const } },
-};
+import { useGsapReveal } from '@/hooks/useGsap';
 
 function BookingCard({ reminder }: { reminder: IBookingReminder }) {
   return (
-    <motion.div
-      variants={itemVariant}
-      className="group relative pl-12 pb-10 last:pb-0"
-    >
+    <div className="group relative pl-12 pb-10 last:pb-0 will-change-transform">
       {/* 时间轴竖线 */}
       <div className="absolute left-[19px] top-0 h-full w-px bg-slate-200 group-last:hidden" />
 
@@ -68,21 +55,36 @@ function BookingCard({ reminder }: { reminder: IBookingReminder }) {
           </div>
         </div>
       </div>
-    </motion.div>
+    </div>
   );
 }
 
 export default function BookingSection() {
+  // 区块标题滚动揭示动画（GSAP）
+  const headerRef = useGsapReveal<HTMLDivElement>({
+    y: 24,
+    duration: 0.6,
+    start: 'top 85%',
+  });
+  // 时间轴卡片错位动画
+  const timelineRef = useGsapReveal<HTMLDivElement>({
+    y: 20,
+    duration: 0.5,
+    stagger: 0.12,
+    start: 'top 80%',
+  });
+  // 底部提示动画
+  const tipRef = useGsapReveal<HTMLDivElement>({
+    y: 16,
+    duration: 0.5,
+    delay: 0.3,
+    start: 'top 90%',
+  });
+
   return (
     <section className="w-full">
       {/* 区块标题 */}
-      <motion.div
-        initial={{ opacity: 0, y: 24 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true, margin: '-80px' }}
-        transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] as const }}
-        className="mb-16 text-center"
-      >
+      <div ref={headerRef} className="mb-16 text-center will-change-transform">
         <span className="mb-4 inline-block text-xs font-bold uppercase tracking-[0.3em] text-slate-400">
           Important Reminders
         </span>
@@ -92,28 +94,19 @@ export default function BookingSection() {
         <p className="mt-4 text-lg font-light leading-relaxed text-slate-500">
           热门景点需提前预约，错过时间可能无法入园
         </p>
-      </motion.div>
+      </div>
 
       {/* 时间轴列表 */}
-      <motion.div
-        variants={container}
-        initial="hidden"
-        whileInView="visible"
-        viewport={{ once: true, margin: '-60px' }}
-        className="max-w-2xl mx-auto"
-      >
+      <div ref={timelineRef} className="max-w-2xl mx-auto will-change-transform">
         {MOCK_BOOKING_REMINDERS.map((reminder) => (
           <BookingCard key={reminder.id} reminder={reminder} />
         ))}
-      </motion.div>
+      </div>
 
       {/* 底部提示 */}
-      <motion.div
-        initial={{ opacity: 0, y: 16 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true }}
-        transition={{ duration: 0.5, delay: 0.4 }}
-        className="mt-12 max-w-2xl mx-auto flex items-start gap-4 rounded-3xl border border-slate-100 bg-slate-50 p-6"
+      <div
+        ref={tipRef}
+        className="mt-12 max-w-2xl mx-auto flex items-start gap-4 rounded-3xl border border-slate-100 bg-slate-50 p-6 will-change-transform"
       >
         <div className="flex size-10 shrink-0 items-center justify-center rounded-2xl bg-white shadow-sm">
           <Calendar className="size-5 text-slate-400" />
@@ -124,7 +117,7 @@ export default function BookingSection() {
             建议使用微信小程序或各景点官方公众号进行预约，部分景点支持提前录入同行人信息，抢票更高效。
           </p>
         </div>
-      </motion.div>
+      </div>
     </section>
   );
 }

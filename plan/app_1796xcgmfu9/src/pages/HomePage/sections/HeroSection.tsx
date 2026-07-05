@@ -1,20 +1,20 @@
 import { useState, useCallback } from 'react';
-import { motion } from 'framer-motion';
 import { ArrowDown, Search, MapPin } from 'lucide-react';
-import { Image } from '@/components/ui/image';
+import { OptimizedImage } from '@/components/OptimizedImage';
+import { useGsapHeroIntro, useGsapReveal } from '@/hooks/useGsap';
 
-const NANBO_IMG = 'https://aka.doubaocdn.com/s/f7Vz1whQ2l';
-const ZONGTONGFU_IMG = 'https://aka.doubaocdn.com/s/pUUP1whQ2l';
-const JIMINGSI_IMG = 'https://aka.doubaocdn.com/s/vujS1whQ2l';
-const XUANWUHU_IMG = 'https://aka.doubaocdn.com/s/8CAT1wh7fx';
-const LAOMENDONG_IMG = 'https://aka.doubaocdn.com/s/0gJP1whQ2l';
-const FUZIMIAO_IMG = 'https://aka.doubaocdn.com/s/Padx1whQ2l';
-const MINGXIAOLING_IMG = 'https://aka.doubaocdn.com/s/5xFr1whQ2l';
-const WUTONG_IMG = 'https://aka.doubaocdn.com/s/61JR1wh7fx';
-const ZHONGSHANLING_IMG = 'https://aka.doubaocdn.com/s/L6iB1whQ2l';
-const YINYUETAI_IMG = 'https://aka.doubaocdn.com/s/bvjU1whQ2l';
-const TIANWENTAI_IMG = 'https://aka.doubaocdn.com/s/lIeQ1wh7fx';
-const JINIANGUAN_IMG = 'https://aka.doubaocdn.com/s/TvkK1whQ2l';
+const NANBO_IMG = '/images/南京博物院_05.jpg';
+const ZONGTONGFU_IMG = '/images/总统府_05.jpg';
+const JIMINGSI_IMG = '/images/鸡鸣寺.png';
+const XUANWUHU_IMG = '/images/玄武湖.png';
+const LAOMENDONG_IMG = '/images/老门东_05.jpg';
+const FUZIMIAO_IMG = '/images/夫子庙秦淮河_05.jpg';
+const MINGXIAOLING_IMG = '/images/明孝陵_05.jpg';
+const WUTONG_IMG = '/images/梧桐大道.png';
+const ZHONGSHANLING_IMG = '/images/中山陵_02.jpg';
+const YINYUETAI_IMG = '/images/音乐台.png';
+const TIANWENTAI_IMG = '/images/紫金山天文台_02.jpg';
+const JINIANGUAN_IMG = '/images/侵华日军南京大屠杀遇难同胞纪念馆_05.jpg';
 
 const DAY_LABELS = ['抵达南京', '金陵文博线', '钟山深度游', '铭记返程'];
 
@@ -43,18 +43,18 @@ const STACK_CARDS: StackCard[] = [
   { imageUrl: JINIANGUAN_IMG, name: '纪念馆', rotate: '-1deg', z: 'z-38', width: 'w-[195px]', top: '390px', left: '380px' },
 ];
 
-const containerVariants = {
-  hidden: {},
-  visible: { transition: { staggerChildren: 0.12, delayChildren: 0.2 } },
-};
-
-const itemVariants = {
-  hidden: { opacity: 0, y: 40 },
-  visible: { opacity: 1, y: 0, transition: { duration: 0.7, ease: 'easeOut' as const } },
-};
-
 export default function HeroSection() {
   const [searchText, setSearchText] = useState('');
+  // Hero 文字内容入场动画（移动端简化）
+  const heroTextRef = useGsapHeroIntro<HTMLDivElement>();
+  // 右侧图片堆叠卡片入场动画
+  const heroCardsRef = useGsapReveal<HTMLDivElement>({
+    y: 60,
+    duration: 0.9,
+    delay: 0.3,
+    stagger: 0.08,
+    start: 'top 90%',
+  });
 
   const handleSearch = useCallback(() => {
     const trimmed = searchText.trim();
@@ -103,52 +103,38 @@ export default function HeroSection() {
 
       <div className="relative z-10 container mx-auto px-6 md:px-12 py-20 md:py-0">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-center min-h-screen">
-          {/* ===== 左栏：文字内容 ===== */}
-          <motion.div
-            variants={containerVariants}
-            initial="hidden"
-            animate="visible"
+          {/* ===== 左栏：文字内容（GSAP 入场动画） ===== */}
+          <div
+            ref={heroTextRef}
             className="flex flex-col justify-center pt-20 lg:pt-0"
           >
             {/* Pill 标签组 */}
-            <motion.div variants={itemVariants} className="flex flex-wrap gap-3 mb-10">
+            <div className="flex flex-wrap gap-3 mb-10">
               <span className="px-5 py-2 rounded-full border border-white/40 text-white text-[10px] tracking-[0.2em] uppercase backdrop-blur-sm font-medium">
                 南京 · 旅行攻略
               </span>
               <span className="px-5 py-2 rounded-full border border-white/30 text-white/80 text-[10px] tracking-[0.2em] uppercase backdrop-blur-sm font-medium">
                 学生党省钱版
               </span>
-            </motion.div>
+            </div>
 
             {/* 超大衬线标题 */}
-            <motion.h1
-              variants={itemVariants}
-              className="text-6xl md:text-8xl font-light font-serif leading-[1.05] text-white mb-6"
-            >
+            <h1 className="text-6xl md:text-8xl font-light font-serif leading-[1.05] text-white mb-6">
               南京
               <br />
               三日游
-            </motion.h1>
+            </h1>
 
             {/* 副标题 */}
-            <motion.p
-              variants={itemVariants}
-              className="text-lg md:text-xl text-white/75 font-light tracking-wide mb-4 max-w-md"
-            >
+            <p className="text-lg md:text-xl text-white/75 font-light tracking-wide mb-4 max-w-md">
               学生党极致省钱版
-            </motion.p>
+            </p>
 
             {/* 装饰横线 */}
-            <motion.div
-              variants={itemVariants}
-              className="w-10 h-0.5 bg-white/60 mb-10"
-            />
+            <div className="w-10 h-0.5 bg-white/60 mb-10" />
 
             {/* 核心信息概览 */}
-            <motion.div
-              variants={itemVariants}
-              className="flex flex-wrap gap-6 mb-12"
-            >
+            <div className="flex flex-wrap gap-6 mb-12">
               {[
                 { label: '人均预算', value: '¥1,700', sub: '总控' },
                 { label: '出行日期', value: '7.14 - 7.17', sub: '4天3晚' },
@@ -167,10 +153,10 @@ export default function HeroSection() {
                   <span className="text-xs text-white/35 mt-0.5">{card.sub}</span>
                 </div>
               ))}
-            </motion.div>
+            </div>
 
             {/* 行程节点 pill 标签 */}
-            <motion.div variants={itemVariants} className="flex flex-wrap gap-2 mb-10">
+            <div className="flex flex-wrap gap-2 mb-10">
               {DAY_LABELS.map((label, i) => (
                 <span
                   key={label}
@@ -179,11 +165,11 @@ export default function HeroSection() {
                   Day {i} · {label}
                 </span>
               ))}
-            </motion.div>
+            </div>
 
             {/* 玻璃拟态搜索框 */}
-            <motion.div variants={itemVariants} className="max-w-sm">
-              <div className="bg-white/15 backdrop-blur-xl rounded-full p-2 pl-6 border border-white/20 focus-within:bg-white/25 shadow-2xl transition-all duration-300 flex items-center gap-2">
+            <div className="max-w-sm">
+              <div className="bg-white/15 backdrop-blur-xl rounded-full p-2 pl-6 border border-white/20 focus-within:bg-white/25 shadow-2xl transition-colors duration-300 flex items-center gap-2">
                 <Search className="size-4 text-white/50 shrink-0" />
                 <input
                   type="text"
@@ -202,67 +188,42 @@ export default function HeroSection() {
                   <Search className="size-4" />
                 </button>
               </div>
-            </motion.div>
+            </div>
 
-            {/* 向下滚动提示 */}
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ delay: 1.8, duration: 0.8 }}
-              className="flex items-center gap-3 mt-16"
-            >
+            {/* 向下滚动提示（CSS 动画替代 framer-motion 无限循环） */}
+            <div className="flex items-center gap-3 mt-16 hero-scroll-hint">
               <span className="text-[10px] tracking-[0.3em] uppercase text-white/35 font-medium">
                 向下探索
               </span>
-              <motion.div
-                animate={{ y: [0, 6, 0] }}
-                transition={{ duration: 2, repeat: Infinity, ease: 'easeInOut' }}
-              >
-                <ArrowDown className="w-4 h-4 text-white/40" />
-              </motion.div>
-            </motion.div>
-          </motion.div>
+              <ArrowDown className="w-4 h-4 text-white/40 hero-scroll-arrow" />
+            </div>
+          </div>
 
-          {/* ===== 右栏：四张景点图片错位叠放 ===== */}
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 1, delay: 0.5 }}
+          {/* ===== 右栏：景点图片错位叠放（GSAP 入场动画） ===== */}
+          <div
+            ref={heroCardsRef}
             className="hidden lg:flex items-center justify-center relative h-[750px]"
           >
-            {STACK_CARDS.map((card, i) => (
-              <motion.div
+            {STACK_CARDS.map((card) => (
+              <div
                 key={card.name}
-                initial={{ opacity: 0, rotate: 0, y: 60, scale: 0.9 }}
-                animate={{
-                  opacity: 1,
-                  rotate: parseFloat(card.rotate),
-                  y: 0,
-                  scale: 1,
-                }}
-                transition={{
-                  duration: 0.9,
-                  delay: 0.6 + i * 0.18,
-                  ease: [0.16, 1, 0.3, 1] as const,
-                }}
-                whileHover={{
-                  rotate: 0,
-                  scale: 1.04,
-                  zIndex: 50,
-                  transition: { duration: 0.7, ease: [0.16, 1, 0.3, 1] as const },
-                }}
-                className={`absolute ${card.z} ${card.width}`}
+                className={`absolute ${card.z} ${card.width} hero-stack-card`}
                 style={{
                   top: card.top,
                   left: card.left,
+                  transform: `rotate(${card.rotate})`,
+                  transformOrigin: 'center center',
+                  willChange: 'transform',
                 }}
               >
                 <div className="bg-white p-4 rounded-[2.5rem] shadow-[0_30px_60px_-15px_rgba(0_0_0_0.08)]">
                   <div className="rounded-[2rem] overflow-hidden aspect-[4/3] bg-slate-200 relative">
-                    <Image
+                    <OptimizedImage
                       src={card.imageUrl}
                       alt={card.name}
-                      className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                      loading="eager"
+                      wrapperClassName="w-full aspect-[4/3]"
+                      className="transition-transform duration-700 hover:scale-105"
                     />
                     {/* 半透明景点名称标注 */}
                     <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/50 via-black/20 to-transparent px-4 py-3">
@@ -275,30 +236,22 @@ export default function HeroSection() {
                     </div>
                   </div>
                 </div>
-              </motion.div>
+              </div>
             ))}
 
-            {/* 浮动装饰元素 */}
-            <motion.div
-              animate={{ y: [0, -8, 0] }}
-              transition={{ duration: 3, repeat: Infinity, ease: 'easeInOut' }}
-              className="absolute top-[-15px] right-[20px] z-50"
-            >
+            {/* 浮动装饰元素（CSS 动画替代 framer-motion） */}
+            <div className="absolute top-[-15px] right-[20px] z-50 hero-float-slow">
               <div className="w-10 h-10 bg-white/90 backdrop-blur-sm rounded-full shadow-xl flex items-center justify-center">
                 <div className="w-2 h-2 bg-slate-400 rounded-full" />
               </div>
-            </motion.div>
+            </div>
 
-            <motion.div
-              animate={{ y: [0, 6, 0] }}
-              transition={{ duration: 3.5, repeat: Infinity, ease: 'easeInOut', delay: 0.5 }}
-              className="absolute bottom-[30px] left-[-10px] z-50"
-            >
+            <div className="absolute bottom-[30px] left-[-10px] z-50 hero-float-fast">
               <div className="w-8 h-8 bg-white/80 backdrop-blur-sm rounded-full shadow-lg flex items-center justify-center">
                 <div className="w-1.5 h-1.5 bg-slate-400 rounded-full" />
               </div>
-            </motion.div>
-          </motion.div>
+            </div>
+          </div>
         </div>
       </div>
     </section>

@@ -73,7 +73,7 @@ export const MOCK_ITINERARY: IItineraryDay[] = [
         fee: 0,
         feeNote: '免费需预约',
         transport: '地铁2号线明故宫站',
-        imageUrl: '/spark/app/app_1796xcgmfu9/runtime/api/v1/storage/object/bucket_aadkioljws4bu_static/static%2Faadkiofukyekw_ve_miaoda',
+        imageUrl: '/images/南京博物院_05.jpg',
         tip: '提前7天预约，9点开馆',
         coordinates: { lng: 118.8167, lat: 32.0417 },
         route: [
@@ -106,7 +106,7 @@ export const MOCK_ITINERARY: IItineraryDay[] = [
         fee: 20,
         feeNote: '学生票半价',
         transport: '地铁2号线大行宫站，步行5分钟',
-        imageUrl: '/spark/app/app_1796xcgmfu9/runtime/api/v1/storage/object/bucket_aadkioljws4bu_static/static%2Faadkioek3kkcu_ve_miaoda',
+        imageUrl: '/images/总统府_05.jpg',
         tip: '提前5天预约',
         coordinates: { lng: 118.7967, lat: 32.0458 },
         route: [
@@ -140,7 +140,7 @@ export const MOCK_ITINERARY: IItineraryDay[] = [
         fee: 10,
         feeNote: '门票（送三根香）',
         transport: '地铁3号线鸡鸣寺站',
-        imageUrl: '/spark/app/app_1796xcgmfu9/runtime/api/v1/storage/object/bucket_aadkioljws4bu_static/static%2Faadkin464pmiw_ve_miaoda',
+        imageUrl: '/images/鸡鸣寺.png',
         coordinates: { lng: 118.7917, lat: 32.0611 },
         route: [
           { name: '南门进入', duration: '-', note: '购票后从南门进入，门票10元送三根香' },
@@ -172,7 +172,7 @@ export const MOCK_ITINERARY: IItineraryDay[] = [
         fee: 0,
         feeNote: '免费',
         transport: '从鸡鸣寺北门步行5分钟',
-        imageUrl: 'https://aka.doubaocdn.com/s/8CAT1wh7fx',
+        imageUrl: '/images/玄武湖.png',
         coordinates: { lng: 118.7917, lat: 32.075 },
         route: [
           { name: '解放门进入', duration: '-', note: '鸡鸣寺北门出来即是解放门，直接入园' },
@@ -202,7 +202,7 @@ export const MOCK_ITINERARY: IItineraryDay[] = [
         fee: 0,
         feeNote: '免费街区',
         transport: '地铁3号线武定门站',
-        imageUrl: 'https://aka.doubaocdn.com/s/BF961wh7fx',
+        imageUrl: '/images/老门东_05.jpg',
         coordinates: { lng: 118.7833, lat: 32.0167 },
         route: [
           { name: '牌坊入口', duration: '-', note: '从箍桶巷南端牌坊进入老门东街区' },
@@ -233,7 +233,7 @@ export const MOCK_ITINERARY: IItineraryDay[] = [
         fee: 0,
         feeNote: '街区免费',
         transport: '从老门东步行10分钟',
-        imageUrl: '/spark/app/app_1796xcgmfu9/runtime/api/v1/storage/object/bucket_aadkioljws4bu_static/static%2Faadkiohshnqzs_ve_miaoda',
+        imageUrl: '/images/夫子庙秦淮河_05.jpg',
         tip: '夜泊秦淮，灯光绝美',
         coordinates: { lng: 118.7833, lat: 32.0208 },
         route: [
@@ -277,7 +277,7 @@ export const MOCK_ITINERARY: IItineraryDay[] = [
         fee: 35,
         feeNote: '学生票',
         transport: '地铁2号线苜蓿园站，步行至3号门',
-        imageUrl: '/spark/app/app_1796xcgmfu9/runtime/api/v1/storage/object/bucket_aadkioljws4bu_static/static%2Faadkiogwx4ybw_ve_miaoda',
+        imageUrl: '/images/明孝陵_05.jpg',
         tip: '清晨人少，神道光影绝佳',
         coordinates: { lng: 118.8417, lat: 32.0583 },
         route: [
@@ -312,7 +312,7 @@ export const MOCK_ITINERARY: IItineraryDay[] = [
         fee: 0,
         feeNote: '免费',
         transport: '从明孝陵步行至陵园路',
-        imageUrl: 'https://aka.doubaocdn.com/s/61JR1wh7fx',
+        imageUrl: '/images/梧桐大道.png',
         coordinates: { lng: 118.846, lat: 32.057 },
         route: [
           { name: '陵园路起点', duration: '-', note: '从明孝陵出口沿指示牌走向陵园路' },
@@ -340,7 +340,7 @@ export const MOCK_ITINERARY: IItineraryDay[] = [
         fee: 0,
         feeNote: '免费需预约',
         transport: '从陵园路步行15分钟',
-        imageUrl: '/spark/app/app_1796xcgmfu9/runtime/api/v1/storage/object/bucket_aadkioljws4bu_static/static%2Faadkioef53uqu_ve_miaoda',
+        imageUrl: '/images/中山陵_02.jpg',
         coordinates: { lng: 118.85, lat: 32.0611 },
         route: [
           { name: '博爱坊', duration: '10min', note: '中山陵入口标志，孙中山手书"博爱"二字' },
@@ -374,7 +374,7 @@ export const MOCK_ITINERARY: IItineraryDay[] = [
         fee: 5,
         feeNote: '学生票',
         transport: '从中山陵步行5分钟',
-        imageUrl: 'https://aka.doubaocdn.com/s/bvjU1whQ2l',
+        imageUrl: '/images/音乐台.png',
         coordinates: { lng: 118.85, lat: 32.0639 },
         route: [
           { name: '入口', duration: '-', note: '中山陵东南侧，步行5分钟即到' },
@@ -402,7 +402,7 @@ export const MOCK_ITINERARY: IItineraryDay[] = [
         fee: 8,
         feeNote: '学生票',
         transport: '从音乐台步行上山40分钟（免费），或乘景区巴士',
-        imageUrl: 'https://aka.doubaocdn.com/s/lIeQ1wh7fx',
+        imageUrl: '/images/紫金山天文台_02.jpg',
         coordinates: { lng: 118.8458, lat: 32.075 },
         route: [
           { name: '步行上山', duration: '40min', note: '从音乐台沿山路步行上山，沿途绿树成荫，不推荐索道（贵且排队）' },
@@ -445,7 +445,7 @@ export const MOCK_ITINERARY: IItineraryDay[] = [
         fee: 0,
         feeNote: '免费，高考生免预约',
         transport: '地铁2号线云锦路站',
-        imageUrl: '/spark/app/app_1796xcgmfu9/runtime/api/v1/storage/object/bucket_aadkioljws4bu_static/static%2Faadkin464pmjw_ve_miaoda',
+        imageUrl: '/images/侵华日军南京大屠杀遇难同胞纪念馆_05.jpg',
         tip: '保持肃穆，禁止拍照区域请遵守',
         coordinates: { lng: 118.7333, lat: 32.0333 },
         route: [
@@ -478,7 +478,7 @@ export const MOCK_ITINERARY: IItineraryDay[] = [
         fee: 0,
         feeNote: '人均30元',
         transport: '地铁2号线大行宫站',
-        imageUrl: '/spark/app/app_1796xcgmfu9/runtime/api/v1/storage/object/bucket_aadkioljws4bu_static/static%2Faadkiofmqdkmu_ve_miaoda',
+        imageUrl: '',
         tip: '许阿姨糕团、草鸡蛋糕必吃',
         coordinates: { lng: 118.796, lat: 32.042 },
         route: [

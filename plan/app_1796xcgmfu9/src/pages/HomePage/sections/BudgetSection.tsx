@@ -1,10 +1,10 @@
 import { useMemo } from 'react';
-import { motion } from 'framer-motion';
 import ReactECharts from 'echarts-for-react';
 import type { EChartsOption } from 'echarts';
 import type { CallbackDataParams } from 'echarts/types/dist/shared';
 import { MOCK_BUDGET } from '@/data/budget';
 import { CHART_COLORS } from '@/lib/chart-colors';
+import { useGsapReveal } from '@/hooks/useGsap';
 
 const CATEGORY_ORDER = ['交通', '住宿', '门票', '餐饮', '其他'];
 
@@ -26,6 +26,28 @@ export default function BudgetSection() {
     });
     return map;
   }, []);
+
+  // 区块标题滚动揭示动画（GSAP）
+  const headerRef = useGsapReveal<HTMLDivElement>({
+    y: 20,
+    duration: 0.6,
+    start: 'top 85%',
+  });
+  // 总预算汇总卡片动画
+  const summaryRef = useGsapReveal<HTMLDivElement>({
+    y: 24,
+    duration: 0.6,
+    delay: 0.1,
+    start: 'top 80%',
+  });
+  // 柱状图 + 明细表格错位动画
+  const chartRef = useGsapReveal<HTMLDivElement>({
+    y: 24,
+    duration: 0.55,
+    stagger: 0.12,
+    delay: 0.15,
+    start: 'top 80%',
+  });
 
   const chartOption: EChartsOption = useMemo(() => ({
     tooltip: {
@@ -87,24 +109,12 @@ export default function BudgetSection() {
     }],
   }), [categoryTotals]);
 
-  const container = {
-    hidden: {},
-    visible: { transition: { staggerChildren: 0.08 } },
-  };
-  const itemVariant = {
-    hidden: { opacity: 0, y: 24 },
-    visible: { opacity: 1, y: 0, transition: { duration: 0.5, ease: [0.16, 1, 0.3, 1] as const } },
-  };
-
   return (
     <div className="container mx-auto px-6 md:px-12">
       {/* 区块标题 */}
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true, margin: '-80px' }}
-        transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] as const }}
-        className="mb-16 text-center"
+      <div
+        ref={headerRef}
+        className="mb-16 text-center will-change-transform"
       >
         <span className="inline-block text-xs font-bold uppercase tracking-[0.2em] text-blue-600 mb-4">
           Budget Breakdown
@@ -115,16 +125,10 @@ export default function BudgetSection() {
         <p className="mt-4 text-lg font-light leading-relaxed text-slate-500">
           人均约 ¥1,518 – ¥1,538，总控 ¥1,700
         </p>
-      </motion.div>
+      </div>
 
       {/* 总预算汇总卡片 */}
-      <motion.div
-        initial={{ opacity: 0, y: 24 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true, margin: '-80px' }}
-        transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] as const }}
-        className="mb-16"
-      >
+      <div ref={summaryRef} className="mb-16 will-change-transform">
         <div className="bg-white rounded-[3rem] shadow-[0_40px_80px_-20px_rgba(0_0_0_0.06)] border border-slate-100 p-10 md:p-12">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
             <div>
@@ -165,18 +169,15 @@ export default function BudgetSection() {
             </div>
           </div>
         </div>
-      </motion.div>
+      </div>
 
       {/* 柱状图 + 明细表格 双栏 */}
-      <motion.div
-        variants={container}
-        initial="hidden"
-        whileInView="visible"
-        viewport={{ once: true, margin: '-60px' }}
-        className="grid grid-cols-1 lg:grid-cols-2 gap-8"
+      <div
+        ref={chartRef}
+        className="grid grid-cols-1 lg:grid-cols-2 gap-8 will-change-transform"
       >
         {/* 柱状图 */}
-        <motion.div variants={itemVariant}>
+        <div>
           <div className="bg-white rounded-[3rem] shadow-sm border border-slate-100 p-8 hover:shadow-xl transition-shadow duration-500">
             <div className="flex items-center justify-between mb-6">
               <h3 className="text-xl font-bold font-serif text-slate-800">费用类别分布</h3>
@@ -184,10 +185,10 @@ export default function BudgetSection() {
             </div>
             <ReactECharts option={chartOption} theme="ud" className="h-[340px]" />
           </div>
-        </motion.div>
+        </div>
 
         {/* 明细表格 */}
-        <motion.div variants={itemVariant}>
+        <div>
           <div className="bg-white rounded-[3rem] shadow-sm border border-slate-100 p-8 hover:shadow-xl transition-shadow duration-500">
             <div className="flex items-center justify-between mb-6">
               <h3 className="text-xl font-bold font-serif text-slate-800">费用明细</h3>
@@ -235,8 +236,8 @@ export default function BudgetSection() {
               </div>
             </div>
           </div>
-        </motion.div>
-      </motion.div>
+        </div>
+      </div>
     </div>
   );
 }

@@ -1,6 +1,6 @@
-import { motion } from 'framer-motion';
 import { Plane, Train, Clock, MapPin, ArrowRight, Ticket } from 'lucide-react';
 import { MOCK_TRANSPORT, type ITransport } from '@/data/transport';
+import { useGsapReveal } from '@/hooks/useGsap';
 
 const TRANSPORT_ICON: Record<ITransport['type'], typeof Plane> = {
   flight: Plane,
@@ -12,27 +12,26 @@ const TYPE_LABEL: Record<ITransport['type'], string> = {
   train: '返程 · 火车',
 };
 
-const container = {
-  hidden: {},
-  visible: { transition: { staggerChildren: 0.15, delayChildren: 0.1 } },
-};
-
-const card = {
-  hidden: { opacity: 0, y: 30 },
-  visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: [0.16, 1, 0.3, 1] as const } },
-};
-
 export default function TransportSection() {
+  // 区块标题滚动揭示动画（GSAP）
+  const headerRef = useGsapReveal<HTMLDivElement>({
+    y: 20,
+    duration: 0.6,
+    start: 'top 85%',
+  });
+  // 交通卡片错位动画
+  const cardsRef = useGsapReveal<HTMLDivElement>({
+    y: 30,
+    duration: 0.6,
+    stagger: 0.15,
+    delay: 0.1,
+    start: 'top 80%',
+  });
+
   return (
     <div className="w-full max-w-3xl mx-auto">
       {/* Section Header */}
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true, margin: '-80px' }}
-        transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] as const }}
-        className="mb-12 md:mb-16"
-      >
+      <div ref={headerRef} className="mb-12 md:mb-16 will-change-transform">
         <p className="text-xs font-bold uppercase tracking-[0.25em] text-blue-600 mb-4">
           Transport
         </p>
@@ -42,25 +41,20 @@ export default function TransportSection() {
         <p className="mt-4 text-lg font-light leading-relaxed text-slate-500 max-w-lg">
           去程深夜航班节省白天时间，返程硬卧夕发朝至，最大化游玩效率
         </p>
-      </motion.div>
+      </div>
 
       {/* Transport Cards */}
-      <motion.div
-        variants={container}
-        initial="hidden"
-        whileInView="visible"
-        viewport={{ once: true, margin: '-60px' }}
-        className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12"
+      <div
+        ref={cardsRef}
+        className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12 will-change-transform"
       >
         {MOCK_TRANSPORT.map((t) => {
           const Icon = TRANSPORT_ICON[t.type];
           const isFlight = t.type === 'flight';
           return (
-            <motion.div
+            <div
               key={t.id}
-              variants={card}
-              whileHover={{ y: -6, transition: { duration: 0.35 } }}
-              className="group relative overflow-hidden rounded-[3rem] bg-white border border-slate-100 shadow-sm hover:shadow-[0_25px_60px_-15px_rgba(0_0_0_0.10)] transition-shadow duration-500"
+              className="group relative overflow-hidden rounded-[3rem] bg-white border border-slate-100 shadow-sm hover:shadow-[0_25px_60px_-15px_rgba(0_0_0_0.10)] transition-all duration-500 hover:-translate-y-1.5 will-change-transform"
             >
               {/* Top decorative stripe */}
               <div
@@ -172,10 +166,10 @@ export default function TransportSection() {
                   {t.note}
                 </p>
               </div>
-            </motion.div>
+            </div>
           );
         })}
-      </motion.div>
+      </div>
     </div>
   );
 }

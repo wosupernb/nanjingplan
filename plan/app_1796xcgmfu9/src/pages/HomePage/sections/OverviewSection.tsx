@@ -1,8 +1,8 @@
 import { memo } from 'react';
-import { motion } from 'framer-motion';
 import { ArrowRight } from 'lucide-react';
 import { MOCK_ITINERARY } from '@/data/itinerary';
 import type { IItineraryDay } from '@/data/itinerary';
+import { useGsapReveal } from '@/hooks/useGsap';
 
 interface OverviewNode {
   id: string;
@@ -48,23 +48,30 @@ const OVERVIEW_DAYS: OverviewNode[] = [
   },
 ];
 
-const containerVariants = {
-  hidden: {},
-  visible: {
-    transition: { staggerChildren: 0.1, delayChildren: 0.15 },
-  },
-};
-
-const itemVariants = {
-  hidden: { opacity: 0, y: 24 },
-  visible: {
-    opacity: 1,
-    y: 0,
-    transition: { duration: 0.55, ease: [0.16, 1, 0.3, 1] as const },
-  },
-};
-
 function OverviewSection() {
+  // 区块标题滚动揭示动画（GSAP）
+  const headerRef = useGsapReveal<HTMLDivElement>({
+    y: 20,
+    duration: 0.6,
+    start: 'top 85%',
+  });
+  // 桌面端时间线节点错位动画
+  const desktopTimelineRef = useGsapReveal<HTMLDivElement>({
+    y: 24,
+    duration: 0.55,
+    stagger: 0.1,
+    delay: 0.15,
+    start: 'top 80%',
+  });
+  // 移动端时间线节点错位动画
+  const mobileTimelineRef = useGsapReveal<HTMLDivElement>({
+    y: 24,
+    duration: 0.55,
+    stagger: 0.1,
+    delay: 0.15,
+    start: 'top 90%',
+  });
+
   const handleNodeClick = (anchor: string) => {
     const id = anchor.replace('#', '');
     const el = document.getElementById(id);
@@ -76,13 +83,7 @@ function OverviewSection() {
   return (
     <section id="overview" className="w-full">
       {/* Section Header */}
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true, margin: '-80px' }}
-        transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] as const }}
-        className="text-center mb-16 md:mb-20"
-      >
+      <div ref={headerRef} className="text-center mb-16 md:mb-20 will-change-transform">
         <span className="inline-block text-[10px] font-bold tracking-[0.25em] uppercase text-slate-400 mb-4">
           Itinerary Overview
         </span>
@@ -92,28 +93,22 @@ function OverviewSection() {
         <p className="mt-4 text-base font-light text-slate-500 max-w-lg mx-auto leading-relaxed">
           3天2晚，从深夜航班抵达，到火车慢旅归途
         </p>
-      </motion.div>
+      </div>
 
       {/* Desktop: Horizontal pill timeline */}
-      <motion.div
-        variants={containerVariants}
-        initial="hidden"
-        whileInView="visible"
-        viewport={{ once: true, margin: '-60px' }}
-        className="hidden md:block"
+      <div
+        ref={desktopTimelineRef}
+        className="hidden md:block will-change-transform"
       >
         <div className="flex items-start justify-between gap-3 relative">
           {/* Connecting line */}
           <div className="absolute top-5 left-8 right-8 h-px bg-slate-200" />
 
           {OVERVIEW_DAYS.map((node) => (
-            <motion.button
+            <button
               key={node.id}
-              variants={itemVariants}
               onClick={() => handleNodeClick(node.anchor)}
-              className="group flex flex-col items-center text-center cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-slate-400 focus-visible:ring-offset-4 rounded-2xl"
-              whileHover={{ y: -6 }}
-              transition={{ duration: 0.3 }}
+              className="group flex flex-col items-center text-center cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-slate-400 focus-visible:ring-offset-4 rounded-2xl transition-transform duration-300 hover:-translate-y-1.5 will-change-transform"
             >
               {/* Decorative number */}
               <span className="text-5xl font-light text-slate-200 font-[family-name:var(--font-serif)] mb-2 group-hover:text-slate-200 transition-colors duration-500">
@@ -140,18 +135,15 @@ function OverviewSection() {
                   </p>
                 </div>
               </div>
-            </motion.button>
+            </button>
           ))}
         </div>
-      </motion.div>
+      </div>
 
       {/* Mobile: Vertical pill list */}
-      <motion.div
-        variants={containerVariants}
-        initial="hidden"
-        whileInView="visible"
-        viewport={{ once: true, margin: '-60px' }}
-        className="md:hidden"
+      <div
+        ref={mobileTimelineRef}
+        className="md:hidden will-change-transform"
       >
         <div className="relative">
           {/* Vertical line */}
@@ -159,13 +151,10 @@ function OverviewSection() {
 
           <div className="space-y-6">
             {OVERVIEW_DAYS.map((node) => (
-              <motion.button
+              <button
                 key={node.id}
-                variants={itemVariants}
                 onClick={() => handleNodeClick(node.anchor)}
-                className="group flex items-start gap-5 w-full text-left cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-slate-400 focus-visible:ring-offset-2 rounded-2xl"
-                whileHover={{ x: 6 }}
-                transition={{ duration: 0.25 }}
+                className="group flex items-start gap-5 w-full text-left cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-slate-400 focus-visible:ring-offset-2 rounded-2xl transition-transform duration-300 hover:translate-x-1.5 will-change-transform"
               >
                 {/* Node dot */}
                 <div className="relative z-10 shrink-0 mt-1">
@@ -191,11 +180,11 @@ function OverviewSection() {
                     {node.description}
                   </p>
                 </div>
-              </motion.button>
+              </button>
             ))}
           </div>
         </div>
-      </motion.div>
+      </div>
     </section>
   );
 }

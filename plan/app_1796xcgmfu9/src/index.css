@@ -3,3 +3,98 @@
 @import "tw-animate-css";
 @import "./tailwind-theme.css";
 @import "./typography.css";
+
+/* ===== 性能优化：CSS 动画替代 JS 无限循环动画 ===== */
+
+/* Hero 向下箭头浮动 */
+@keyframes hero-arrow-bob {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(6px); }
+}
+
+.hero-scroll-arrow {
+  animation: hero-arrow-bob 2s ease-in-out infinite;
+  will-change: transform;
+}
+
+/* Hero 滚动提示淡入 */
+@keyframes hero-hint-fade {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.hero-scroll-hint {
+  animation: hero-hint-fade 0.8s ease-out 1.8s both;
+}
+
+/* Hero 浮动装饰元素（慢速） */
+@keyframes hero-float-slow {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-8px); }
+}
+
+.hero-float-slow {
+  animation: hero-float-slow 3s ease-in-out infinite;
+  will-change: transform;
+}
+
+/* Hero 浮动装饰元素（快速） */
+@keyframes hero-float-fast {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(6px); }
+}
+
+.hero-float-fast {
+  animation: hero-float-fast 3.5s ease-in-out 0.5s infinite;
+  will-change: transform;
+}
+
+/* ===== 移动端性能优化 ===== */
+
+/* 移动端禁用 hover 动画以节省 GPU 资源 */
+@media (hover: none) and (pointer: coarse) {
+  .hero-stack-card:hover {
+    transform: none !important;
+  }
+}
+
+/* 尊重用户减少动画偏好 */
+@media (prefers-reduced-motion: reduce) {
+  .hero-scroll-arrow,
+  .hero-float-slow,
+  .hero-float-fast {
+    animation: none !important;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* ===== 全局性能优化 ===== */
+
+/* 平滑滚动（带性能优化） */
+html {
+  scroll-behavior: smooth;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* GPU 加速提示：对动画元素启用 */
+.hero-stack-card,
+.hero-float-slow,
+.hero-float-fast,
+.hero-scroll-arrow {
+  transform: translateZ(0);
+  backface-visibility: hidden;
+  perspective: 1000px;
+}
+
+/* 图片渲染优化 */
+img {
+  content-visibility: auto;
+}

@@ -6,6 +6,7 @@ import {
 } from 'lucide-react';
 import { MOCK_TIPS } from '@/data/tips';
 import type { ITip } from '@/data/tips';
+import { useGsapReveal } from '@/hooks/useGsap';
 
 const ICON_MAP: Record<string, typeof Lightbulb> = {
   '🏛️': ShieldAlert,
@@ -41,11 +42,10 @@ function TipCard({ tip, index }: { tip: ITip; index: number }) {
   return (
     <motion.div
       initial={{ opacity: 0, y: 24 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: '-40px' }}
-      transition={{ duration: 0.5, delay: index * 0.04, ease: [0.16, 1, 0.3, 1] as const }}
-      whileHover={{ y: -4, transition: { duration: 0.2 } }}
-      className="group relative rounded-3xl border border-slate-100 bg-white p-6 shadow-sm transition-all duration-300 hover:shadow-xl"
+      animate={{ opacity: 1, y: 0 }}
+      exit={{ opacity: 0, y: -12 }}
+      transition={{ duration: 0.4, delay: Math.min(index * 0.04, 0.2), ease: [0.16, 1, 0.3, 1] as const }}
+      className="group relative rounded-3xl border border-slate-100 bg-white p-6 shadow-sm transition-all duration-300 hover:shadow-xl hover:-translate-y-1 will-change-transform"
     >
       <div className="flex items-start gap-4">
         <div className={`flex size-12 shrink-0 items-center justify-center rounded-2xl transition-all duration-300 group-hover:bg-lime-400 group-hover:text-slate-900 ${cfg.bg} text-slate-500`}>
@@ -69,6 +69,21 @@ export default memo(function TipsSection() {
   const [activeCategory, setActiveCategory] = useState<string>('全部');
   const [showAll, setShowAll] = useState(false);
 
+  // 区块标题滚动揭示动画（GSAP）
+  const headerRef = useGsapReveal<HTMLDivElement>({
+    y: 20,
+    duration: 0.5,
+    start: 'top 85%',
+  });
+  // 分类筛选标签滚动揭示动画
+  const filterRef = useGsapReveal<HTMLDivElement>({
+    y: 12,
+    duration: 0.4,
+    delay: 0.1,
+    stagger: 0.05,
+    start: 'top 90%',
+  });
+
   const grouped = useMemo(() => {
     const map: Record<string, ITip[]> = {};
     for (const cat of CATEGORY_ORDER) map[cat] = [];
@@ -91,13 +106,7 @@ export default memo(function TipsSection() {
   return (
     <div>
       {/* section header */}
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true, margin: '-60px' }}
-        transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] as const }}
-        className="mb-12 text-center"
-      >
+      <div ref={headerRef} className="mb-12 text-center will-change-transform">
         <span className="inline-block rounded-full border border-blue-200 bg-blue-50 px-5 py-1.5 text-[10px] font-bold uppercase tracking-[0.2em] text-blue-600">
           避坑指南
         </span>
@@ -107,19 +116,12 @@ export default memo(function TipsSection() {
         <p className="mt-4 text-lg font-light leading-relaxed text-slate-500">
           踩过的坑就别再踩了，帮你省下冤枉钱
         </p>
-      </motion.div>
+      </div>
 
       {/* category filter tabs */}
-      <motion.div
-        initial={{ opacity: 0, y: 12 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true }}
-        transition={{ duration: 0.4, delay: 0.1 }}
-        className="mb-10 flex flex-wrap items-center justify-center gap-2"
-      >
+      <div ref={filterRef} className="mb-10 flex flex-wrap items-center justify-center gap-2 will-change-transform">
         {['全部', ...CATEGORY_ORDER].map((cat) => {
           const isActive = activeCategory === cat;
-          const cfg = CATEGORY_CONFIG[cat];
           return (
             <button
               key={cat}
@@ -140,7 +142,7 @@ export default memo(function TipsSection() {
             </button>
           );
         })}
-      </motion.div>
+      </div>
 
       {/* tips grid */}
       <motion.div layout className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
@@ -153,12 +155,7 @@ export default memo(function TipsSection() {
 
       {/* show more / less */}
       {filteredTips.length > 6 && (
-        <motion.div
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          viewport={{ once: true }}
-          className="mt-10 text-center"
-        >
+        <div className="mt-10 text-center">
           <button
             type="button"
             onClick={() => setShowAll((v) => !v)}
@@ -167,7 +164,7 @@ export default memo(function TipsSection() {
             {showAll ? '收起' : `查看全部 ${filteredTips.length} 条`}
             <ChevronDown className={`size-4 transition-transform duration-300 ${showAll ? 'rotate-180' : ''}`} />
           </button>
-        </motion.div>
+        </div>
       )}
     </div>
   );

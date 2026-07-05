@@ -1,7 +1,7 @@
 import { useState, memo } from 'react';
-import { motion } from 'framer-motion';
 import { Check, ChevronDown, CreditCard, Shirt, Smartphone, Droplets, Pill } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { useGsapReveal } from '@/hooks/useGsap';
 
 // ──────────────────────────────────────
 // 装备清单数据
@@ -83,25 +83,24 @@ const CHECKLIST_DATA: IChecklistCategory[] = [
 // 组件
 // ──────────────────────────────────────
 
-const containerVariants = {
-  hidden: {},
-  visible: {
-    transition: { staggerChildren: 0.08, delayChildren: 0.1 },
-  },
-};
-
-const categoryVariants = {
-  hidden: { opacity: 0, y: 24 },
-  visible: {
-    opacity: 1,
-    y: 0,
-    transition: { duration: 0.5, ease: [0.16, 1, 0.3, 1] as const },
-  },
-};
-
 function ChecklistSection() {
   const [checked, setChecked] = useState<Set<string>>(new Set());
   const [collapsed, setCollapsed] = useState<Set<string>>(new Set());
+
+  // 区块标题滚动揭示动画（GSAP）
+  const headerRef = useGsapReveal<HTMLDivElement>({
+    y: 20,
+    duration: 0.6,
+    start: 'top 85%',
+  });
+  // 分类卡片错位动画
+  const gridRef = useGsapReveal<HTMLDivElement>({
+    y: 24,
+    duration: 0.5,
+    stagger: 0.08,
+    delay: 0.1,
+    start: 'top 80%',
+  });
 
   const toggleItem = (id: string) => {
     setChecked((prev) => {
@@ -126,17 +125,12 @@ function ChecklistSection() {
     (sum, c) => sum + c.items.filter((i) => checked.has(i.id)).length,
     0,
   );
+  const progressPercent = (checkedCount / totalItems) * 100;
 
   return (
     <section className="w-full">
       {/* ── 标题行 ── */}
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true, margin: '-80px' }}
-        transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] as const }}
-        className="mb-16"
-      >
+      <div ref={headerRef} className="mb-16 will-change-transform">
         <p className="text-xs font-bold uppercase tracking-[0.3em] text-blue-600 mb-4">
           Packing List
         </p>
@@ -148,25 +142,19 @@ function ChecklistSection() {
             {checkedCount}/{totalItems}
           </span>
         </div>
-        {/* 进度条 */}
+        {/* 进度条（CSS transition 替代 motion） */}
         <div className="mt-6 h-1.5 w-full rounded-full bg-slate-100 overflow-hidden">
-          <motion.div
-            className="h-full rounded-full bg-slate-900"
-            initial={{ width: 0 }}
-            whileInView={{ width: `${(checkedCount / totalItems) * 100}%` }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] as const }}
+          <div
+            className="h-full rounded-full bg-slate-900 transition-[width] duration-700 ease-out will-change-[width]"
+            style={{ width: `${progressPercent}%` }}
           />
         </div>
-      </motion.div>
+      </div>
 
       {/* ── 分类列表 ── */}
-      <motion.div
-        variants={containerVariants}
-        initial="hidden"
-        whileInView="visible"
-        viewport={{ once: true, margin: '-60px' }}
-        className="grid grid-cols-1 md:grid-cols-2 gap-6"
+      <div
+        ref={gridRef}
+        className="grid grid-cols-1 md:grid-cols-2 gap-6 will-change-transform"
       >
         {CHECKLIST_DATA.map((cat) => {
           const Icon = cat.icon;
@@ -174,9 +162,8 @@ function ChecklistSection() {
           const catChecked = cat.items.filter((i) => checked.has(i.id)).length;
 
           return (
-            <motion.div
+            <div
               key={cat.id}
-              variants={categoryVariants}
               className="rounded-3xl border border-slate-100 bg-white shadow-sm hover:shadow-xl transition-shadow duration-300 overflow-hidden"
             >
               {/* 分类标题栏 */}
@@ -243,10 +230,10 @@ function ChecklistSection() {
                   })}
                 </ul>
               )}
-            </motion.div>
+            </div>
           );
         })}
-      </motion.div>
+      </div>
     </section>
   );
 }

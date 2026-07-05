@@ -1,9 +1,9 @@
-import { useState, useCallback } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import { Clock, MapPin, Ticket, Bus, ChevronDown, Navigation, ExternalLink, Train, Footprints, ArrowRight } from 'lucide-react';
-import { Image } from '@/components/ui/image';
+import { useState } from 'react';
+import { AnimatePresence, motion } from 'framer-motion';
+import { Clock, MapPin, Ticket, Bus, ChevronDown, Navigation, ExternalLink, Train, Footprints } from 'lucide-react';
+import { OptimizedImage } from '@/components/OptimizedImage';
+import { useGsapReveal } from '@/hooks/useGsap';
 import { Badge } from '@/components/ui/badge';
-import { Button } from '@/components/ui/button';
 import { MOCK_ITINERARY, type IItineraryDay, type IItinerarySpot } from '@/data/itinerary';
 
 // ── 景点详细路线数据 ──────────────────────────────────
@@ -396,15 +396,18 @@ function RoutePanel({ spot }: { spot: IItinerarySpot }) {
 // ── 景点卡片 ──────────────────────────────────
 function SpotCard({ spot, index }: { spot: IItinerarySpot; index: number }) {
   const routeData = SPOT_ROUTES[spot.name];
+  // 每个景点卡片独立的滚动揭示动画（GSAP）
+  const cardRef = useGsapReveal<HTMLDivElement>({
+    y: 24,
+    duration: 0.55,
+    delay: Math.min(index * 0.08, 0.4),
+    start: 'top 90%',
+  });
 
   return (
-    <motion.div
-      initial={{ opacity: 0, y: 24 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: '-60px' }}
-      transition={{ duration: 0.55, delay: index * 0.08, ease: [0.16, 1, 0.3, 1] as const }}
-      whileHover={{ y: -4, transition: { duration: 0.25 } }}
-      className="group relative pl-12 pb-10 last:pb-0"
+    <div
+      ref={cardRef}
+      className="group relative pl-12 pb-10 last:pb-0 will-change-transform"
     >
       {/* timeline dot + line */}
       <div className="absolute left-0 top-0 flex flex-col items-center h-full">
@@ -415,13 +418,14 @@ function SpotCard({ spot, index }: { spot: IItinerarySpot; index: number }) {
       {/* card */}
       <div className="rounded-3xl border border-slate-100 bg-white shadow-sm hover:shadow-xl transition-shadow duration-500 overflow-hidden">
         <div className="flex flex-col md:flex-row">
-          {/* image */}
+          {/* image - 使用 OptimizedImage 优化加载 */}
           {spot.imageUrl ? (
             <div className="md:w-52 lg:w-60 shrink-0 overflow-hidden">
-              <Image
+              <OptimizedImage
                 src={spot.imageUrl}
                 alt={spot.name}
-                className="w-full h-44 md:h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                wrapperClassName="w-full h-44 md:h-full"
+                className="transition-transform duration-700 group-hover:scale-105"
               />
             </div>
           ) : (
@@ -477,24 +481,34 @@ function SpotCard({ spot, index }: { spot: IItinerarySpot; index: number }) {
           </div>
         </div>
       </div>
-    </motion.div>
+    </div>
   );
 }
 
 // ── 单日面板 ──────────────────────────────────
-function DayPanel({ day, index }: { day: IItineraryDay; index: number }) {
+function DayPanel({ day }: { day: IItineraryDay; index: number }) {
+  // 单日面板标题滚动揭示动画（GSAP）
+  const headerRef = useGsapReveal<HTMLDivElement>({
+    y: 48,
+    duration: 0.7,
+    start: 'top 85%',
+  });
+  // 当日费用合计滚动揭示动画
+  const totalRef = useGsapReveal<HTMLDivElement>({
+    y: 12,
+    duration: 0.4,
+    delay: 0.2,
+    start: 'top 95%',
+  });
+
   return (
-    <motion.section
+    <section
       id={`day${day.day}`}
-      initial={{ opacity: 0, y: 48 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: '-80px' }}
-      transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] as const }}
       className="w-full py-20 md:py-28"
     >
       <div className="container mx-auto px-6 md:px-12 max-w-5xl">
         {/* decorative giant number */}
-        <div className="relative mb-10 md:mb-14">
+        <div ref={headerRef} className="relative mb-10 md:mb-14 will-change-transform">
           <span className="absolute -top-12 -left-4 md:-top-16 md:-left-8 text-[8rem] md:text-[10rem] font-bold text-slate-100 font-serif leading-none select-none pointer-events-none">
             0{day.day}
           </span>
@@ -521,12 +535,9 @@ function DayPanel({ day, index }: { day: IItineraryDay; index: number }) {
         </div>
 
         {/* daily total */}
-        <motion.div
-          initial={{ opacity: 0, y: 12 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.4, delay: 0.3 }}
-          className="mt-10 ml-12 flex items-center justify-between p-5 rounded-2xl bg-slate-50 border border-slate-100"
+        <div
+          ref={totalRef}
+          className="mt-10 ml-12 flex items-center justify-between p-5 rounded-2xl bg-slate-50 border border-slate-100 will-change-transform"
         >
           <span className="text-sm font-medium text-slate-500 flex items-center gap-2">
             <Ticket className="size-4" />
@@ -535,35 +546,35 @@ function DayPanel({ day, index }: { day: IItineraryDay; index: number }) {
           <span className="text-2xl font-bold tabular-nums text-slate-900">
             ¥{day.dailyTotal}
           </span>
-        </motion.div>
+        </div>
       </div>
-    </motion.section>
+    </section>
   );
 }
 
 // ── 主组件 ──────────────────────────────────
 export default function DayDetailSection() {
+  // 区块标题滚动揭示动画（GSAP）
+  const sectionHeaderRef = useGsapReveal<HTMLDivElement>({
+    y: 24,
+    duration: 0.5,
+    start: 'top 85%',
+  });
+
   return (
     <>
       {/* section header */}
       <div className="w-full pt-24 pb-6">
-        <div className="container mx-auto px-6 md:px-12 max-w-5xl text-center">
-          <motion.div
-            initial={{ opacity: 0, y: 24 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.5 }}
-          >
-            <span className="text-xs font-bold uppercase tracking-[0.25em] text-slate-400">
-              Daily Itinerary
-            </span>
-            <h2 className="mt-4 text-4xl md:text-5xl font-bold text-slate-900 font-serif tracking-tight">
-              逐日详情
-            </h2>
-            <p className="mt-4 text-lg font-light text-slate-500 max-w-xl mx-auto leading-relaxed">
-              每一天都是精心编排的旅程，跟随时间线，不错过任何精彩
-            </p>
-          </motion.div>
+        <div ref={sectionHeaderRef} className="container mx-auto px-6 md:px-12 max-w-5xl text-center will-change-transform">
+          <span className="text-xs font-bold uppercase tracking-[0.25em] text-slate-400">
+            Daily Itinerary
+          </span>
+          <h2 className="mt-4 text-4xl md:text-5xl font-bold text-slate-900 font-serif tracking-tight">
+            逐日详情
+          </h2>
+          <p className="mt-4 text-lg font-light text-slate-500 max-w-xl mx-auto leading-relaxed">
+            每一天都是精心编排的旅程，跟随时间线，不错过任何精彩
+          </p>
         </div>
       </div>
 
