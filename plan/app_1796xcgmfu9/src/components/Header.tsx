@@ -50,7 +50,7 @@ export default function Header() {
           onClick={closeMobile}
         >
           <span className="font-serif text-2xl tracking-widest text-slate-900">
-            南京三日游
+            南京四日游
           </span>
           <span className="hidden sm:inline text-[10px] font-bold uppercase tracking-[0.3em] text-slate-400">
             Travel Guide

@@ -16,16 +16,6 @@ interface OverviewNode {
 }
 
 const OVERVIEW_DAYS: OverviewNode[] = [
-  {
-    id: '0',
-    day: 0,
-    title: '抵达南京',
-    subtitle: '深夜航班',
-    date: '7月14日',
-    description: 'MU2966 南宁→南京 · 23:25出发',
-    anchor: '#hero',
-    icon: '✈️',
-  },
   ...MOCK_ITINERARY.map((d: IItineraryDay) => ({
     id: d.id,
     day: d.day,
@@ -34,18 +24,8 @@ const OVERVIEW_DAYS: OverviewNode[] = [
     date: d.date,
     description: `${d.spots.length} 个景点 · 门票 ¥${d.dailyTotal}`,
     anchor: `#day${d.day}`,
-    icon: d.day === 1 ? '🏛️' : d.day === 2 ? '🌿' : '🕊️',
+    icon: d.day === 1 ? '⛴️' : d.day === 2 ? '🏛️' : d.day === 3 ? '🌿' : '🕊️',
   })),
-  {
-    id: '4',
-    day: 4,
-    title: '返程归途',
-    subtitle: '火车慢旅',
-    date: '7月17日',
-    description: 'K1557 南京→南宁 · 14:36出发',
-    anchor: '#transport',
-    icon: '🚂',
-  },
 ];
 
 function OverviewSection() {
@@ -91,7 +71,7 @@ function OverviewSection() {
           行程总览
         </h2>
         <p className="mt-4 text-base font-light text-slate-500 max-w-lg mx-auto leading-relaxed">
-          3天2晚，从深夜航班抵达，到火车慢旅归途
+          4天3晚，从浦口半日游到钟山深度游，再到铭记线返程
         </p>
       </div>
 

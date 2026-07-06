@@ -18,15 +18,15 @@ export const MOCK_TRANSPORT: ITransport[] = [
   {
     id: '1',
     type: 'flight',
-    code: 'MU2966',
+    code: '航班待定',
     route: '南宁 → 南京',
-    departureTime: '23:25',
-    arrivalTime: '01:50 (+1天)',
-    duration: '2h25m',
+    departureTime: '中午',
+    arrivalTime: '下午',
+    duration: '约2.5h',
     price: 600,
-    priceNote: '起',
+    priceNote: '经济舱',
     seatClass: '经济舱',
-    note: '去程航班，深夜出发次日凌晨抵达',
+    note: '去程航班，中午出发下午抵达禄口T2，地铁S1→1号线到三山街',
     imageUrl: ''
   },
   {
@@ -36,11 +36,11 @@ export const MOCK_TRANSPORT: ITransport[] = [
     route: '南京 → 南宁',
     departureTime: '14:36',
     arrivalTime: '15:35 (+1天)',
-    duration: '25h',
+    duration: '24h59m',
     price: 353,
     priceNote: '硬卧',
     seatClass: '硬卧',
-    note: '返程火车，次日抵达南宁',
+    note: '返程火车，过路站！注意确认车次和站台，次日15:35抵达南宁',
     imageUrl: ''
   }
 ]

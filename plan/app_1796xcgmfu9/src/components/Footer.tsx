@@ -27,10 +27,10 @@ export default function Footer() {
         >
           <div className="space-y-4">
             <h3 className="text-2xl font-light tracking-widest text-slate-900" style={{ fontFamily: "'Noto Serif SC', serif" }}>
-              南京三日游
+              南京四日游
             </h3>
             <p className="text-sm text-slate-500 leading-relaxed max-w-xs">
-              一份面向学生党的南京三日极致省钱攻略指南，涵盖行程规划、预算控制、交通票务与避坑建议。
+              一份面向学生党的南京四日极致省钱攻略指南，涵盖行程规划、预算控制、交通票务与避坑建议。
             </p>
           </div>
 
@@ -89,7 +89,7 @@ export default function Footer() {
 
         <div className="mt-12 pt-8 border-t border-slate-100 flex flex-col md:flex-row items-center justify-between gap-4">
           <p className="text-xs font-bold uppercase tracking-[0.2em] text-slate-400">
-            &copy; {currentYear} 南京三日游攻略 · 学生党极致省钱版
+            &copy; {currentYear} 南京四日游攻略 · 学生党极致省钱版
           </p>
           <p className="text-xs text-slate-400">
             内容仅供参考，出行前请以官方信息为准
