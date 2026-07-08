@@ -7,6 +7,8 @@ interface OptimizedImageProps {
   className?: string;
   wrapperClassName?: string;
   loading?: 'lazy' | 'eager';
+  /** 首屏关键图片设为 high，浏览器优先加载 */
+  fetchPriority?: 'high' | 'low' | 'auto';
   /** 是否显示骨架屏占位符 */
   showSkeleton?: boolean;
   /** 加载失败时显示的文字（默认取 alt 第一个字符） */
@@ -27,6 +29,7 @@ function OptimizedImageInner({
   className,
   wrapperClassName,
   loading = 'lazy',
+  fetchPriority = 'auto',
   showSkeleton = true,
   fallbackChar,
 }: OptimizedImageProps) {
@@ -80,6 +83,7 @@ function OptimizedImageInner({
           alt={alt}
           loading={loading}
           decoding="async"
+          fetchPriority={fetchPriority}
           onLoad={() => setLoaded(true)}
           onError={() => setError(true)}
           className={cn(

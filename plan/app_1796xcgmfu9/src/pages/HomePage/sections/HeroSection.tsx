@@ -336,6 +336,7 @@ export default function HeroSection() {
                       src={card.imageUrl}
                       alt={card.name}
                       loading={i < 4 ? 'eager' : 'lazy'}
+                      fetchPriority={i < 4 ? 'high' : 'auto'}
                       wrapperClassName="w-full aspect-[4/3]"
                       className="transition-transform duration-700 hover:scale-105"
                     />
