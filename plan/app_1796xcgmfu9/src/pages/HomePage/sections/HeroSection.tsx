@@ -18,14 +18,14 @@ function useMergedRef<T>(...refs: (React.Ref<T> | null)[]): React.RefCallback<T>
 
 const NANBO_IMG = '/images/南京博物院_05.jpg';
 const ZONGTONGFU_IMG = '/images/总统府_05.jpg';
-const JIMINGSI_IMG = '/images/鸡鸣寺.png';
-const XUANWUHU_IMG = '/images/玄武湖.png';
+const JIMINGSI_IMG = '/images/鸡鸣寺.jpg';
+const XUANWUHU_IMG = '/images/玄武湖.jpg';
 const LAOMENDONG_IMG = '/images/老门东_05.jpg';
 const FUZIMIAO_IMG = '/images/夫子庙秦淮河_05.jpg';
 const MINGXIAOLING_IMG = '/images/明孝陵_05.jpg';
-const WUTONG_IMG = '/images/梧桐大道.png';
+const WUTONG_IMG = '/images/梧桐大道.jpg';
 const ZHONGSHANLING_IMG = '/images/中山陵_02.jpg';
-const YINYUETAI_IMG = '/images/音乐台.png';
+const YINYUETAI_IMG = '/images/音乐台.jpg';
 const TIANWENTAI_IMG = '/images/紫金山天文台_02.jpg';
 const JINIANGUAN_IMG = '/images/侵华日军南京大屠杀遇难同胞纪念馆_05.jpg';
 
@@ -335,7 +335,7 @@ export default function HeroSection() {
                     <OptimizedImage
                       src={card.imageUrl}
                       alt={card.name}
-                      loading="eager"
+                      loading={i < 4 ? 'eager' : 'lazy'}
                       wrapperClassName="w-full aspect-[4/3]"
                       className="transition-transform duration-700 hover:scale-105"
                     />

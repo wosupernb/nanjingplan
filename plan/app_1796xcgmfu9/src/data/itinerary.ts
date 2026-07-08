@@ -325,7 +325,7 @@ export const MOCK_ITINERARY: IItineraryDay[] = [
         fee: 10,
         feeNote: '门票（送三根香）',
         transport: '地铁3号线 大行宫→鸡鸣寺',
-        imageUrl: '/images/鸡鸣寺.png',
+        imageUrl: '/images/鸡鸣寺.jpg',
         coordinates: { lng: 118.7917, lat: 32.0611 },
         route: [
           { name: '南门进入', duration: '-', note: '购票后从南门进入，门票10元送三根香' },
@@ -357,7 +357,7 @@ export const MOCK_ITINERARY: IItineraryDay[] = [
         fee: 0,
         feeNote: '免费',
         transport: '从鸡鸣寺北门步行5分钟',
-        imageUrl: '/images/玄武湖.png',
+        imageUrl: '/images/玄武湖.jpg',
         coordinates: { lng: 118.7917, lat: 32.075 },
         route: [
           { name: '解放门进入', duration: '-', note: '鸡鸣寺北门出来即是解放门，直接入园' },
@@ -498,7 +498,7 @@ export const MOCK_ITINERARY: IItineraryDay[] = [
         fee: 0,
         feeNote: '免费',
         transport: '从明孝陵步行15分钟',
-        imageUrl: '/images/梧桐大道.png',
+        imageUrl: '/images/梧桐大道.jpg',
         coordinates: { lng: 118.846, lat: 32.057 },
         route: [
           { name: '陵园路起点', duration: '-', note: '从明孝陵出口沿指示牌走向陵园路' },
@@ -562,7 +562,7 @@ export const MOCK_ITINERARY: IItineraryDay[] = [
         fee: 5,
         feeNote: '学生票',
         transport: '从中山陵步行5分钟',
-        imageUrl: '/images/音乐台.png',
+        imageUrl: '/images/音乐台.jpg',
         coordinates: { lng: 118.85, lat: 32.0639 },
         route: [
           { name: '入口', duration: '-', note: '中山陵东南侧，步行5分钟即到' },
