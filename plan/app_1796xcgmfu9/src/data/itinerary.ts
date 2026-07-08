@@ -73,7 +73,7 @@ export const MOCK_ITINERARY: IItineraryDay[] = [
         fee: 0,
         feeNote: '已预订',
         transport: '地铁S1→1号线 禄口机场→三山街',
-        imageUrl: '',
+        imageUrl: 'https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=%E6%B8%A9%E9%A6%A8%E6%B0%91%E5%AE%BF%E5%AE%A4%E5%86%85%E6%8A%95%E5%BD%B1%E4%BB%AA%E8%88%92%E9%80%82%E5%8D%A7%E5%AE%A4%E6%9A%96%E8%89%B2%E8%B0%83%E7%81%AF%E5%85%89%E5%B7%A5%E4%B8%9A%E9%A3%8E%E6%A0%BC%E8%A3%85%E9%A5%B0&image_size=landscape_4_3',
         tip: '中山南路369号「巨幕MaX投影No.8赋闲洛畔」⭐4.9',
         coordinates: { lng: 118.782038, lat: 32.022953 },
         warnings: [
@@ -270,7 +270,7 @@ export const MOCK_ITINERARY: IItineraryDay[] = [
         fee: 0,
         feeNote: '人均30元',
         transport: '地铁2号线 明故宫→大行宫',
-        imageUrl: '',
+        imageUrl: 'https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=%E5%8D%97%E4%BA%AC%E7%A7%91%E5%B7%B7%E7%BE%8E%E9%A3%9F%E8%A1%97%E7%83%AD%E9%97%B9%E5%B0%8F%E5%90%83%E6%91%8A%E4%BD%8D%E7%83%9F%E7%81%AB%E6%B0%94%E8%A1%97%E5%B8%82%E7%94%9F%E6%B4%BB&image_size=landscape_4_3',
         tip: '鸭血粉丝汤+鸡鸣汤包+藕饼',
         coordinates: { lng: 118.796, lat: 32.042 },
         highlights: [
@@ -704,7 +704,7 @@ export const MOCK_ITINERARY: IItineraryDay[] = [
         fee: 0,
         feeNote: '人均25元',
         transport: '地铁2号线 云锦路→大行宫',
-        imageUrl: '',
+        imageUrl: 'https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=%E5%8D%97%E4%BA%AC%E7%A7%91%E5%B7%B7%E7%BE%8E%E9%A3%9F%E8%A1%97%E7%83%AD%E9%97%B9%E5%B0%8F%E5%90%83%E6%91%8A%E4%BD%8D%E7%83%9F%E7%81%AB%E6%B0%94%E8%A1%97%E5%B8%82%E7%94%9F%E6%B4%BB&image_size=landscape_4_3',
         tip: '快速吃，吃完就走！',
         coordinates: { lng: 118.796, lat: 32.042 },
         highlights: [
@@ -725,7 +725,7 @@ export const MOCK_ITINERARY: IItineraryDay[] = [
         fee: 0,
         feeNote: 'K1557 14:36发车',
         transport: '地铁1号线 三山街→南京站',
-        imageUrl: '',
+        imageUrl: 'https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=%E5%8D%97%E4%BA%AC%E7%81%AB%E8%BD%A6%E7%AB%99%E5%BB%BA%E7%AD%91%E5%A4%96%E8%A7%82%E7%8E%84%E6%AD%A6%E6%B9%96%E8%BE%B9%E7%8E%B0%E4%BB%A3%E5%BB%BA%E7%AD%91%E5%80%99%E8%BD%A6%E5%A4%A7%E5%8E%85&image_size=landscape_4_3',
         tip: '⚠️K1557是过路站！确认车次和站台！',
         coordinates: { lng: 118.792, lat: 32.089 },
         route: [
