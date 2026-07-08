@@ -1,4 +1,4 @@
-// EXPORTS: IItineraryDay, IItinerarySpot, MOCK_ITINERARY
+﻿// EXPORTS: IItineraryDay, IItinerarySpot, MOCK_ITINERARY
 
 /** 景点内部路线步骤 */
 export interface IRouteStep {
@@ -73,7 +73,7 @@ export const MOCK_ITINERARY: IItineraryDay[] = [
         fee: 0,
         feeNote: '已预订',
         transport: '地铁S1→1号线 禄口机场→三山街',
-        imageUrl: 'https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=%E6%B8%A9%E9%A6%A8%E6%B0%91%E5%AE%BF%E5%AE%A4%E5%86%85%E6%8A%95%E5%BD%B1%E4%BB%AA%E8%88%92%E9%80%82%E5%8D%A7%E5%AE%A4%E6%9A%96%E8%89%B2%E8%B0%83%E7%81%AF%E5%85%89%E5%B7%A5%E4%B8%9A%E9%A3%8E%E6%A0%BC%E8%A3%85%E9%A5%B0&image_size=landscape_4_3',
+        imageUrl: '',
         tip: '中山南路369号「巨幕MaX投影No.8赋闲洛畔」⭐4.9',
         coordinates: { lng: 118.782038, lat: 32.022953 },
         warnings: [
@@ -89,7 +89,7 @@ export const MOCK_ITINERARY: IItineraryDay[] = [
         fee: 0,
         feeNote: '免费参观',
         transport: '地铁5号线 三山街→下关站',
-        imageUrl: 'https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=%E4%B8%AD%E5%B1%B1%E7%A0%81%E5%A4%B4%E6%B0%91%E5%9B%BD%E5%BB%BA%E7%AD%91%E9%95%BF%E6%B1%9F%E6%99%AF%E6%99%A8%E5%85%89%E6%B1%9F%E8%BE%B9%E7%A0%81%E5%A4%B4%E5%AE%9E%E6%99%8B%E4%BB%A3%E9%A3%8E%E6%A0%BC%E5%BB%BA%E7%AD%91%E9%97%A8%E5%A4%B4%E9%95%BF%E6%B1%9F%E8%83%8C%E6%99%AF&image_size=landscape_4_3',
+        imageUrl: '',
         tip: '高德评分4.8，营业时间06:00-19:00',
         coordinates: { lng: 118.733456, lat: 32.087671 },
         highlights: [
@@ -123,7 +123,7 @@ export const MOCK_ITINERARY: IItineraryDay[] = [
         fee: 2,
         feeNote: '刷公交卡/支付宝',
         transport: '中山码头→浦口码头',
-        imageUrl: 'https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=%E5%AE%81%E6%B5%A6%E7%BA%BF%E8%BD%AE%E6%B8%A1%E9%95%BF%E6%B1%9F%E7%94%B2%E6%9D%BF%E6%B1%9F%E6%99%AF%E8%90%BD%E6%97%A5%E9%BB%84%E6%98%8F%E8%BD%AE%E6%B8%A1%E8%88%B9%E5%8F%AA%E5%BC%80%E9%95%BF%E6%B1%9F%E9%9D%A2%E6%B3%A2%E5%85%89%E7%B2%BC%E7%B2%BC&image_size=landscape_4_3',
+        imageUrl: '',
         tip: '★甲板拍长江日落！7月日落约19:00',
         coordinates: { lng: 118.722443, lat: 32.095517 },
         highlights: [
@@ -157,7 +157,7 @@ export const MOCK_ITINERARY: IItineraryDay[] = [
         fee: 0,
         feeNote: '免费参观',
         transport: '浦口码头出站步行5分钟',
-        imageUrl: 'https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=%E6%B5%A6%E5%8F%A3%E7%81%AB%E8%BD%A6%E7%AB%99%E7%99%BE%E5%B9%B4%E8%80%81%E7%AB%99%E6%B0%91%E5%9B%BD%E5%BB%BA%E7%AD%91%E6%9C%88%E5%8F%B0%E9%93%81%E8%BD%A8%E6%A2%A7%E6%A1%90%E6%A0%91%E5%BD%B1%E5%AD%90%E5%A4%8D%E5%8F%A4%E6%96%87%E8%89%BA&image_size=landscape_4_3',
+        imageUrl: '',
         tip: '★朱自清《背影》场景！高德评分4.6',
         coordinates: { lng: 118.720209, lat: 32.097647 },
         highlights: [
@@ -191,7 +191,7 @@ export const MOCK_ITINERARY: IItineraryDay[] = [
         fee: 0,
         feeNote: '免费开放',
         transport: '浦口码头→轮渡回中山码头→沿江边路南行步行15分钟',
-        imageUrl: 'https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=%E4%B8%8B%E5%85%B3%E7%81%AB%E8%BD%A6%E4%B8%BB%E9%A2%98%E5%9B%AD%E7%BB%BF%E7%9A%AE%E7%81%AB%E8%BD%A6%E9%93%81%E8%BD%A8%E6%97%A5%E8%90%BD%E9%95%BF%E6%B1%9F%E6%99%AF%E5%A4%8D%E5%8F%A4%E6%96%87%E8%89%BA&image_size=landscape_4_3',
+        imageUrl: '',
         tip: '★绿皮火车+长江日落！高德评分4.6',
         coordinates: { lng: 118.743868, lat: 32.10391 },
         highlights: [
@@ -270,7 +270,7 @@ export const MOCK_ITINERARY: IItineraryDay[] = [
         fee: 0,
         feeNote: '人均30元',
         transport: '地铁2号线 明故宫→大行宫',
-        imageUrl: 'https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=%E5%8D%97%E4%BA%AC%E7%A7%91%E5%B7%B7%E7%BE%8E%E9%A3%9F%E8%A1%97%E7%83%AD%E9%97%B9%E5%B0%8F%E5%90%83%E6%91%8A%E4%BD%8D%E7%83%9F%E7%81%AB%E6%B0%94%E8%A1%97%E5%B8%82%E7%94%9F%E6%B4%BB&image_size=landscape_4_3',
+        imageUrl: '',
         tip: '鸭血粉丝汤+鸡鸣汤包+藕饼',
         coordinates: { lng: 118.796, lat: 32.042 },
         highlights: [
@@ -704,7 +704,7 @@ export const MOCK_ITINERARY: IItineraryDay[] = [
         fee: 0,
         feeNote: '人均25元',
         transport: '地铁2号线 云锦路→大行宫',
-        imageUrl: 'https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=%E5%8D%97%E4%BA%AC%E7%A7%91%E5%B7%B7%E7%BE%8E%E9%A3%9F%E8%A1%97%E7%83%AD%E9%97%B9%E5%B0%8F%E5%90%83%E6%91%8A%E4%BD%8D%E7%83%9F%E7%81%AB%E6%B0%94%E8%A1%97%E5%B8%82%E7%94%9F%E6%B4%BB&image_size=landscape_4_3',
+        imageUrl: '',
         tip: '快速吃，吃完就走！',
         coordinates: { lng: 118.796, lat: 32.042 },
         highlights: [
@@ -725,7 +725,7 @@ export const MOCK_ITINERARY: IItineraryDay[] = [
         fee: 0,
         feeNote: 'K1557 14:36发车',
         transport: '地铁1号线 三山街→南京站',
-        imageUrl: 'https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=%E5%8D%97%E4%BA%AC%E7%81%AB%E8%BD%A6%E7%AB%99%E5%BB%BA%E7%AD%91%E5%A4%96%E8%A7%82%E7%8E%84%E6%AD%A6%E6%B9%96%E8%BE%B9%E7%8E%B0%E4%BB%A3%E5%BB%BA%E7%AD%91%E5%80%99%E8%BD%A6%E5%A4%A7%E5%8E%85&image_size=landscape_4_3',
+        imageUrl: '',
         tip: '⚠️K1557是过路站！确认车次和站台！',
         coordinates: { lng: 118.792, lat: 32.089 },
         route: [
