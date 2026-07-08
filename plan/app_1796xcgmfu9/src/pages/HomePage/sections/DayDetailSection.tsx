@@ -6,7 +6,13 @@ import { useGsapReveal } from '@/hooks/useGsap';
 import { Badge } from '@/components/ui/badge';
 import { MOCK_ITINERARY, type IItineraryDay, type IItinerarySpot } from '@/data/itinerary';
 
-// ── 景点详细路线数据 ──────────────────────────────────
+const DAY_COLORS = [
+  { main: '#B84233', light: 'rgba(184,66,51,0.1)', bgLight: 'rgba(184,66,51,0.05)', lineLight: 'rgba(184,66,51,0.2)' },
+  { main: '#C4A265', light: 'rgba(196,162,101,0.1)', bgLight: 'rgba(196,162,101,0.05)', lineLight: 'rgba(196,162,101,0.2)' },
+  { main: '#4A7C6F', light: 'rgba(74,124,111,0.1)', bgLight: 'rgba(74,124,111,0.05)', lineLight: 'rgba(74,124,111,0.2)' },
+  { main: '#3D4F5F', light: 'rgba(61,79,95,0.1)', bgLight: 'rgba(61,79,95,0.05)', lineLight: 'rgba(61,79,95,0.2)' },
+];
+
 interface IRouteStep {
   label: string;
   duration: string;
@@ -250,7 +256,6 @@ function getAmapNavUrl(name: string, lng: number, lat: number): string {
   return `https://uri.amap.com/marker?position=${lng},${lat}&name=${encodeURIComponent(name)}&callnative=1`;
 }
 
-// ── 可折叠路线面板 ──────────────────────────────────
 function RoutePanel({ spot }: { spot: IItinerarySpot }) {
   const [open, setOpen] = useState(false);
   const routeData = SPOT_ROUTES[spot.name];
@@ -260,7 +265,6 @@ function RoutePanel({ spot }: { spot: IItinerarySpot }) {
 
   return (
     <div className="mt-4 border-t border-slate-100 pt-4">
-      {/* 折叠触发 */}
       <button
         onClick={() => setOpen((v) => !v)}
           className="flex w-full items-center justify-between rounded-xl px-3 py-2 text-left text-xs font-bold uppercase tracking-widest text-slate-400 transition-colors hover:bg-slate-50 hover:text-slate-600"
@@ -284,7 +288,6 @@ function RoutePanel({ spot }: { spot: IItinerarySpot }) {
             className="overflow-hidden"
           >
             <div className="space-y-4 pt-4">
-              {/* 内部动线 */}
               {routeData.route.length > 0 && routeData.route[0].label !== '候车大厅' && (
                 <div>
                   <p className="mb-3 text-[10px] font-bold uppercase tracking-[0.2em] text-slate-400">内部动线</p>
@@ -308,7 +311,6 @@ function RoutePanel({ spot }: { spot: IItinerarySpot }) {
                 </div>
               )}
 
-              {/* 必看亮点 */}
               {routeData.highlights.length > 0 && (
                 <div>
                   <p className="mb-2 text-[10px] font-bold uppercase tracking-[0.2em] text-slate-400">必看亮点</p>
@@ -322,7 +324,6 @@ function RoutePanel({ spot }: { spot: IItinerarySpot }) {
                 </div>
               )}
 
-              {/* 拍照点 */}
               {routeData.photoSpots.length > 0 && (
                 <div>
                   <p className="mb-2 text-[10px] font-bold uppercase tracking-[0.2em] text-slate-400">最佳拍照点</p>
@@ -336,7 +337,6 @@ function RoutePanel({ spot }: { spot: IItinerarySpot }) {
                 </div>
               )}
 
-              {/* 注意事项 */}
               {routeData.notes.length > 0 && (
                 <div>
                   <p className="mb-2 text-[10px] font-bold uppercase tracking-[0.2em] text-slate-400">注意事项</p>
@@ -351,7 +351,6 @@ function RoutePanel({ spot }: { spot: IItinerarySpot }) {
                 </div>
               )}
 
-              {/* 高德地图交通信息 */}
               {routeData.transit.length > 0 && (
                 <div className="rounded-2xl bg-slate-50 p-4 border border-slate-100">
                   <div className="mb-3 flex items-center justify-between">
@@ -378,8 +377,7 @@ function RoutePanel({ spot }: { spot: IItinerarySpot }) {
                 </div>
               )}
 
-              {/* 一键导航按钮 */}
-              <a href={navUrl} target="_blank" rel="noreferrer" className="flex w-full items-center justify-center gap-2 rounded-2xl bg-slate-700 px-6 py-3 text-sm font-bold text-white shadow-lg transition-all duration-300 hover:bg-slate-800 hover:shadow-xl hover:-translate-y-0.5"
+              <a href={navUrl} target="_blank" rel="noreferrer" className="flex w-full items-center justify-center gap-2 rounded-2xl px-6 py-3 text-sm font-bold text-white shadow-lg transition-all duration-300 hover:shadow-xl hover:-translate-y-0.5" style={{ backgroundColor: '#B84233' }} onMouseEnter={(e) => e.currentTarget.style.backgroundColor = '#9A372B'} onMouseLeave={(e) => e.currentTarget.style.backgroundColor = '#B84233'}
               >
                 <Navigation className="size-4" />
                 一键导航到「{spot.name}」
@@ -393,10 +391,8 @@ function RoutePanel({ spot }: { spot: IItinerarySpot }) {
   );
 }
 
-// ── 景点卡片 ──────────────────────────────────
-function SpotCard({ spot, index }: { spot: IItinerarySpot; index: number }) {
+function SpotCard({ spot, index, dayColor }: { spot: IItinerarySpot; index: number; dayColor: typeof DAY_COLORS[0] }) {
   const routeData = SPOT_ROUTES[spot.name];
-  // 每个景点卡片独立的滚动揭示动画（GSAP）
   const cardRef = useGsapReveal<HTMLDivElement>({
     y: 24,
     duration: 0.55,
@@ -409,16 +405,13 @@ function SpotCard({ spot, index }: { spot: IItinerarySpot; index: number }) {
       ref={cardRef}
       className="group relative pl-12 pb-10 last:pb-0 will-change-transform"
     >
-      {/* timeline dot + line */}
       <div className="absolute left-0 top-0 flex flex-col items-center h-full">
-        <div className="w-3 h-3 rounded-full bg-slate-500 ring-4 ring-slate-50 z-10 shrink-0 mt-1.5" />
-        <div className="w-px flex-1 bg-slate-200 mt-1" />
+        <div className="w-3 h-3 rounded-full ring-4 z-10 shrink-0 mt-1.5" style={{ backgroundColor: dayColor.main, boxShadow: `0 0 0 4px ${dayColor.bgLight}` }} />
+        <div className="w-px flex-1 mt-1" style={{ backgroundColor: dayColor.lineLight }} />
       </div>
 
-      {/* card */}
-      <div className="rounded-3xl border border-slate-100 bg-white shadow-sm hover:shadow-xl transition-shadow duration-500 overflow-hidden">
+      <div className="card-3d rounded-3xl border border-slate-100 bg-white overflow-hidden">
         <div className="flex flex-col md:flex-row">
-          {/* image - 使用 OptimizedImage 优化加载 */}
           {spot.imageUrl ? (
             <div className="md:w-52 lg:w-60 shrink-0 overflow-hidden">
               <OptimizedImage
@@ -434,7 +427,6 @@ function SpotCard({ spot, index }: { spot: IItinerarySpot; index: number }) {
             </div>
           )}
 
-          {/* content */}
           <div className="flex-1 p-5 md:p-6 min-w-0">
             <div className="flex items-start justify-between gap-4 mb-3">
               <div className="min-w-0">
@@ -476,7 +468,6 @@ function SpotCard({ spot, index }: { spot: IItinerarySpot; index: number }) {
               </div>
             )}
 
-            {/* 可折叠详细路线 */}
             <RoutePanel spot={spot} />
           </div>
         </div>
@@ -485,15 +476,13 @@ function SpotCard({ spot, index }: { spot: IItinerarySpot; index: number }) {
   );
 }
 
-// ── 单日面板 ──────────────────────────────────
-function DayPanel({ day }: { day: IItineraryDay; index: number }) {
-  // 单日面板标题滚动揭示动画（GSAP）
+function DayPanel({ day, index }: { day: IItineraryDay; index: number }) {
+  const dayColor = DAY_COLORS[index] || DAY_COLORS[0];
   const headerRef = useGsapReveal<HTMLDivElement>({
     y: 48,
     duration: 0.7,
     start: 'top 85%',
   });
-  // 当日费用合计滚动揭示动画
   const totalRef = useGsapReveal<HTMLDivElement>({
     y: 12,
     duration: 0.4,
@@ -507,13 +496,12 @@ function DayPanel({ day }: { day: IItineraryDay; index: number }) {
       className="w-full py-20 md:py-28"
     >
       <div className="container mx-auto px-6 md:px-12 max-w-5xl">
-        {/* decorative giant number */}
         <div ref={headerRef} className="relative mb-10 md:mb-14 will-change-transform">
-          <span className="absolute -top-12 -left-4 md:-top-16 md:-left-8 text-[8rem] md:text-[10rem] font-bold text-slate-100 font-serif leading-none select-none pointer-events-none">
+          <span className="absolute -top-12 -left-4 md:-top-16 md:-left-8 text-[8rem] md:text-[10rem] font-bold font-serif leading-none select-none pointer-events-none" style={{ color: dayColor.light }}>
             0{day.day}
           </span>
           <div className="relative z-10 flex items-center gap-4 pt-8">
-            <span className="inline-flex items-center justify-center w-12 h-12 rounded-2xl bg-slate-900 text-white text-sm font-bold shadow-lg">
+            <span className="inline-flex items-center justify-center w-12 h-12 rounded-2xl text-white text-sm font-bold shadow-lg" style={{ backgroundColor: dayColor.main }}>
               D{day.day}
             </span>
             <div>
@@ -527,23 +515,22 @@ function DayPanel({ day }: { day: IItineraryDay; index: number }) {
           </div>
         </div>
 
-        {/* spots timeline */}
         <div className="relative">
           {day.spots.map((spot, i) => (
-            <SpotCard key={spot.id} spot={spot} index={i} />
+            <SpotCard key={spot.id} spot={spot} index={i} dayColor={dayColor} />
           ))}
         </div>
 
-        {/* daily total */}
         <div
           ref={totalRef}
-          className="mt-10 ml-12 flex items-center justify-between p-5 rounded-2xl bg-slate-50 border border-slate-100 will-change-transform"
+          className="mt-10 ml-12 flex items-center justify-between p-5 rounded-2xl border will-change-transform"
+          style={{ backgroundColor: dayColor.bgLight, borderColor: dayColor.lineLight }}
         >
           <span className="text-sm font-medium text-slate-500 flex items-center gap-2">
             <Ticket className="size-4" />
             当日{day.dailyTotalNote}
           </span>
-          <span className="text-2xl font-bold tabular-nums text-slate-900">
+          <span className="text-2xl font-bold tabular-nums" style={{ color: dayColor.main }}>
             ¥{day.dailyTotal}
           </span>
         </div>
@@ -552,9 +539,7 @@ function DayPanel({ day }: { day: IItineraryDay; index: number }) {
   );
 }
 
-// ── 主组件 ──────────────────────────────────
 export default function DayDetailSection() {
-  // 区块标题滚动揭示动画（GSAP）
   const sectionHeaderRef = useGsapReveal<HTMLDivElement>({
     y: 24,
     duration: 0.5,
@@ -563,7 +548,6 @@ export default function DayDetailSection() {
 
   return (
     <>
-      {/* section header */}
       <div className="w-full pt-24 pb-6">
         <div ref={sectionHeaderRef} className="container mx-auto px-6 md:px-12 max-w-5xl text-center will-change-transform">
           <span className="text-xs font-bold uppercase tracking-[0.25em] text-slate-400">
@@ -578,7 +562,6 @@ export default function DayDetailSection() {
         </div>
       </div>
 
-      {/* day panels */}
       {MOCK_ITINERARY.map((day, i) => (
         <DayPanel key={day.id} day={day} index={i} />
       ))}

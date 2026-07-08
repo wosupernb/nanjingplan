@@ -13,10 +13,14 @@ interface RevealOptions {
   start?: string;
   once?: boolean;
   scale?: number;
+  rotationX?: number;
+  rotationY?: number;
+  z?: number;
 }
 
 /**
- * 滚动揭示动画 Hook（移动端优化版）
+ * 滚动揭示动画 Hook（南京风3D版）
+ * - 支持3D旋转入场
  * - 自动检测移动端并降低动画复杂度
  * - 尊重 prefers-reduced-motion 用户偏好
  * - 使用 force3D 强制 GPU 加速
@@ -39,28 +43,32 @@ export function useGsapReveal<T extends HTMLElement = HTMLDivElement>(
       start = 'top 85%',
       once = true,
       scale = 1,
+      rotationX = 0,
+      rotationY = 0,
+      z = 0,
     } = options;
 
     const ctx = gsap.context(() => {
       const mm = gsap.matchMedia();
 
-      // 尊重用户减少动画偏好
       mm.add('(prefers-reduced-motion: reduce)', () => {
         const targets = stagger > 0 ? el.children : el;
-        gsap.set(targets, { opacity: 1, y: 0, scale: 1 });
+        gsap.set(targets, { opacity: 1, y: 0, scale: 1, rotateX: 0, rotateY: 0, z: 0 });
         return;
       });
 
-      // 桌面端：完整动画
       mm.add('(min-width: 768px) and (prefers-reduced-motion: no-preference)', () => {
         const targets = stagger > 0 ? el.children : el;
         gsap.fromTo(
           targets,
-          { y, opacity, scale },
+          { y, opacity, scale, rotateX: rotationX, rotateY: rotationY, z },
           {
             y: 0,
             opacity: 1,
             scale: 1,
+            rotateX: 0,
+            rotateY: 0,
+            z: 0,
             duration,
             delay,
             stagger,
@@ -75,12 +83,11 @@ export function useGsapReveal<T extends HTMLElement = HTMLDivElement>(
         );
       });
 
-      // 移动端：简化动画（更短时长，更小位移）
       mm.add('(max-width: 767px) and (prefers-reduced-motion: no-preference)', () => {
         const targets = stagger > 0 ? el.children : el;
         gsap.fromTo(
           targets,
-          { y: Math.min(y, 24), opacity, scale: 1 },
+          { y: Math.min(y, 24), opacity, scale: 1, rotateX: 0, rotateY: 0 },
           {
             y: 0,
             opacity: 1,
@@ -108,7 +115,6 @@ export function useGsapReveal<T extends HTMLElement = HTMLDivElement>(
 
 /**
  * 列表错位动画 Hook
- * 用于在容器内的子元素上应用错位进入动画
  */
 export function useGsapStagger<T extends HTMLElement = HTMLDivElement>(
   selector: string,
@@ -179,9 +185,7 @@ export function useGsapStagger<T extends HTMLElement = HTMLDivElement>(
 }
 
 /**
- * Hero 区域专用入场动画 Hook
- * - 页面加载时立即播放（无 ScrollTrigger）
- * - 移动端简化以提升首屏性能
+ * Hero 区域专用入场动画 Hook（3D增强版）
  */
 export function useGsapHeroIntro<T extends HTMLElement = HTMLDivElement>() {
   const ref = useRef<T>(null);
@@ -198,16 +202,17 @@ export function useGsapHeroIntro<T extends HTMLElement = HTMLDivElement>() {
         return;
       });
 
-      // 桌面端：完整入场动画
       mm.add('(min-width: 1024px) and (prefers-reduced-motion: no-preference)', () => {
         const tl = gsap.timeline({ delay: 0.2 });
         tl.fromTo(
           el.children,
-          { opacity: 0, y: 40 },
+          { opacity: 0, y: 50, rotateX: 8, z: -30 },
           {
             opacity: 1,
             y: 0,
-            duration: 0.7,
+            rotateX: 0,
+            z: 0,
+            duration: 0.8,
             stagger: 0.12,
             ease: 'power3.out',
             force3D: true,
@@ -215,7 +220,6 @@ export function useGsapHeroIntro<T extends HTMLElement = HTMLDivElement>() {
         );
       });
 
-      // 移动端/平板：简化入场动画
       mm.add('(max-width: 1023px) and (prefers-reduced-motion: no-preference)', () => {
         const tl = gsap.timeline({ delay: 0.1 });
         tl.fromTo(
@@ -232,6 +236,202 @@ export function useGsapHeroIntro<T extends HTMLElement = HTMLDivElement>() {
         );
       });
     }, ref);
+
+    return () => ctx.revert();
+  }, []);
+
+  return ref;
+}
+
+/**
+ * 滚动视差 Hook - 元素随滚动产生位移，营造深度感
+ * @param speed 视差速度，正值向下移动，负值向上移动。建议 0.1-0.5
+ */
+export function useGsapParallax<T extends HTMLElement = HTMLDivElement>(
+  speed: number = 0.3,
+  options: { start?: string; end?: string } = {}
+) {
+  const ref = useRef<T>(null);
+
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+
+    const ctx = gsap.context(() => {
+      const mm = gsap.matchMedia();
+
+      mm.add('(prefers-reduced-motion: reduce)', () => {
+        return;
+      });
+
+      mm.add('(min-width: 768px) and (prefers-reduced-motion: no-preference)', () => {
+        gsap.to(el, {
+          yPercent: speed * 100,
+          ease: 'none',
+          force3D: true,
+          scrollTrigger: {
+            trigger: el,
+            start: options.start ?? 'top bottom',
+            end: options.end ?? 'bottom top',
+            scrub: true,
+          },
+        });
+      });
+    }, ref);
+
+    return () => ctx.revert();
+  }, [speed, options.start, options.end]);
+
+  return ref;
+}
+
+/**
+ * 滚动深度视差 Hook - 多层元素以不同速度移动，营造立体层次感
+ * @param layers 每层配置 { selector, speed }
+ */
+export function useGsapDepthParallax<T extends HTMLElement = HTMLDivElement>(
+  layers: { selector: string; speed: number }[]
+) {
+  const ref = useRef<T>(null);
+
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+
+    const ctx = gsap.context(() => {
+      const mm = gsap.matchMedia();
+
+      mm.add('(prefers-reduced-motion: reduce)', () => {
+        return;
+      });
+
+      mm.add('(min-width: 768px) and (prefers-reduced-motion: no-preference)', () => {
+        layers.forEach(({ selector, speed }) => {
+          const targets = el.querySelectorAll(selector);
+          if (targets.length) {
+            gsap.to(targets, {
+              yPercent: speed * 100,
+              ease: 'none',
+              force3D: true,
+              scrollTrigger: {
+                trigger: el,
+                start: 'top bottom',
+                end: 'bottom top',
+                scrub: 1,
+              },
+            });
+          }
+        });
+      });
+    }, ref);
+
+    return () => ctx.revert();
+  }, [layers]);
+
+  return ref;
+}
+
+/**
+ * 3D卡片倾斜效果 Hook - 鼠标悬停时卡片产生3D倾斜
+ */
+export function useGsapTilt<T extends HTMLElement = HTMLDivElement>(
+  options: { max?: number; perspective?: number; scale?: number } = {}
+) {
+  const ref = useRef<T>(null);
+
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+
+    const max = options.max ?? 8;
+    const perspective = options.perspective ?? 1000;
+    const scale = options.scale ?? 1.02;
+
+    const ctx = gsap.context(() => {
+      const mm = gsap.matchMedia();
+
+      mm.add('(prefers-reduced-motion: reduce)', () => {
+        return;
+      });
+
+      mm.add('(hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference)', () => {
+        el.style.perspective = `${perspective}px`;
+        el.style.transformStyle = 'preserve-3d';
+
+        const onMouseMove = (e: MouseEvent) => {
+          const rect = el.getBoundingClientRect();
+          const x = (e.clientX - rect.left) / rect.width;
+          const y = (e.clientY - rect.top) / rect.height;
+          const rotateY = (x - 0.5) * max * 2;
+          const rotateX = (0.5 - y) * max * 2;
+
+          gsap.to(el, {
+            rotateX,
+            rotateY,
+            scale,
+            duration: 0.4,
+            ease: 'power2.out',
+            force3D: true,
+            overwrite: 'auto',
+          });
+        };
+
+        const onMouseLeave = () => {
+          gsap.to(el, {
+            rotateX: 0,
+            rotateY: 0,
+            scale: 1,
+            duration: 0.6,
+            ease: 'power3.out',
+            force3D: true,
+            overwrite: 'auto',
+          });
+        };
+
+        el.addEventListener('mousemove', onMouseMove);
+        el.addEventListener('mouseleave', onMouseLeave);
+
+        return () => {
+          el.removeEventListener('mousemove', onMouseMove);
+          el.removeEventListener('mouseleave', onMouseLeave);
+        };
+      });
+    }, ref);
+
+    return () => ctx.revert();
+  }, [options.max, options.perspective, options.scale]);
+
+  return ref;
+}
+
+/**
+ * 滚动进度指示器 Hook - 返回一个ref，元素宽度随页面滚动进度变化
+ */
+export function useGsapScrollProgress<T extends HTMLElement = HTMLDivElement>() {
+  const ref = useRef<T>(null);
+
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+
+    const ctx = gsap.context(() => {
+      gsap.fromTo(
+        el,
+        { scaleX: 0 },
+        {
+          scaleX: 1,
+          ease: 'none',
+          transformOrigin: 'left center',
+          force3D: true,
+          scrollTrigger: {
+            trigger: document.body,
+            start: 'top top',
+            end: 'bottom bottom',
+            scrub: 0.3,
+          },
+        }
+      );
+    });
 
     return () => ctx.revert();
   }, []);

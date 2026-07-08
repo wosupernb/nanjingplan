@@ -23,7 +23,7 @@ export const MOCK_TRANSPORT: ITransport[] = [
     departureTime: '中午',
     arrivalTime: '下午',
     duration: '约2.5h',
-    price: 600,
+    price: 720,
     priceNote: '经济舱',
     seatClass: '经济舱',
     note: '去程航班，中午出发下午抵达禄口T2，地铁S1→1号线到三山街',

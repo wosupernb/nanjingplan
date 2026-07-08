@@ -8,7 +8,7 @@ export interface IBudgetItem {
 }
 
 export const MOCK_BUDGET: IBudgetItem[] = [
-  { id: '1', category: '交通', item: '去程机票', detail: '南宁→南京 经济舱', amount: 600 },
+  { id: '1', category: '交通', item: '去程机票', detail: '南宁→南京 经济舱', amount: 720 },
   { id: '2', category: '交通', item: '返程火车', detail: 'K1557 南京→南宁 硬卧', amount: 353 },
   { id: '3', category: '交通', item: '市内交通', detail: '地铁+公交+轮渡（4天）', amount: 60 },
   { id: '4', category: '交通', item: '机场地铁', detail: '禄口机场→市区 S1→1号线', amount: 8 },

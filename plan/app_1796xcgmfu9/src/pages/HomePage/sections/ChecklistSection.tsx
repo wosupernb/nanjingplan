@@ -3,10 +3,6 @@ import { Check, ChevronDown, CreditCard, Shirt, Smartphone, Droplets, Pill } fro
 import { cn } from '@/lib/utils';
 import { useGsapReveal } from '@/hooks/useGsap';
 
-// ──────────────────────────────────────
-// 装备清单数据
-// ──────────────────────────────────────
-
 interface IChecklistItem {
   id: string;
   label: string;
@@ -16,14 +12,26 @@ interface IChecklistCategory {
   id: string;
   title: string;
   icon: React.ComponentType<{ className?: string }>;
+  color: string;
+  bgColor: string;
   items: IChecklistItem[];
 }
+
+const CATEGORY_COLORS: Record<string, { color: string; bgColor: string }> = {
+  documents: { color: '#B84233', bgColor: 'rgba(184, 66, 51, 0.1)' },
+  clothing: { color: '#C4A265', bgColor: 'rgba(196, 162, 101, 0.1)' },
+  electronics: { color: '#6B7B8C', bgColor: 'rgba(107, 123, 140, 0.1)' },
+  daily: { color: '#4A7C6F', bgColor: 'rgba(74, 124, 111, 0.1)' },
+  medicine: { color: '#3D4F5F', bgColor: 'rgba(61, 79, 95, 0.1)' },
+};
 
 const CHECKLIST_DATA: IChecklistCategory[] = [
   {
     id: 'documents',
     title: '证件类',
     icon: CreditCard,
+    color: CATEGORY_COLORS.documents.color,
+    bgColor: CATEGORY_COLORS.documents.bgColor,
     items: [
       { id: 'd1', label: '身份证' },
       { id: 'd2', label: '学生证（景点半价必备）' },
@@ -35,6 +43,8 @@ const CHECKLIST_DATA: IChecklistCategory[] = [
     id: 'clothing',
     title: '衣物类',
     icon: Shirt,
+    color: CATEGORY_COLORS.clothing.color,
+    bgColor: CATEGORY_COLORS.clothing.bgColor,
     items: [
       { id: 'c1', label: '速干 T 恤 × 3' },
       { id: 'c2', label: '薄外套（早晚温差）' },
@@ -47,6 +57,8 @@ const CHECKLIST_DATA: IChecklistCategory[] = [
     id: 'electronics',
     title: '电子设备',
     icon: Smartphone,
+    color: CATEGORY_COLORS.electronics.color,
+    bgColor: CATEGORY_COLORS.electronics.bgColor,
     items: [
       { id: 'e1', label: '手机 + 充电器' },
       { id: 'e2', label: '充电宝（2 万毫安）' },
@@ -58,6 +70,8 @@ const CHECKLIST_DATA: IChecklistCategory[] = [
     id: 'daily',
     title: '日用类',
     icon: Droplets,
+    color: CATEGORY_COLORS.daily.color,
+    bgColor: CATEGORY_COLORS.daily.bgColor,
     items: [
       { id: 'u1', label: '防晒霜 SPF50+' },
       { id: 'u2', label: '驱蚊液（钟山景区必备）' },
@@ -70,6 +84,8 @@ const CHECKLIST_DATA: IChecklistCategory[] = [
     id: 'medicine',
     title: '药品类',
     icon: Pill,
+    color: CATEGORY_COLORS.medicine.color,
+    bgColor: CATEGORY_COLORS.medicine.bgColor,
     items: [
       { id: 'm1', label: '创可贴 / 碘伏棉签' },
       { id: 'm2', label: '藿香正气水（防中暑）' },
@@ -79,21 +95,15 @@ const CHECKLIST_DATA: IChecklistCategory[] = [
   },
 ];
 
-// ──────────────────────────────────────
-// 组件
-// ──────────────────────────────────────
-
 function ChecklistSection() {
   const [checked, setChecked] = useState<Set<string>>(new Set());
   const [collapsed, setCollapsed] = useState<Set<string>>(new Set());
 
-  // 区块标题滚动揭示动画（GSAP）
   const headerRef = useGsapReveal<HTMLDivElement>({
     y: 20,
     duration: 0.6,
     start: 'top 85%',
   });
-  // 分类卡片错位动画
   const gridRef = useGsapReveal<HTMLDivElement>({
     y: 24,
     duration: 0.5,
@@ -129,29 +139,26 @@ function ChecklistSection() {
 
   return (
     <section className="w-full">
-      {/* ── 标题行 ── */}
       <div ref={headerRef} className="mb-16 will-change-transform">
-        <p className="text-xs font-bold uppercase tracking-[0.3em] text-blue-600 mb-4">
+        <p className="text-xs font-bold uppercase tracking-[0.3em] mb-4" style={{ color: '#B84233' }}>
           Packing List
         </p>
         <div className="flex items-end justify-between gap-4 flex-wrap">
           <h2 className="text-4xl md:text-5xl font-serif font-bold text-slate-900 tracking-tight">
             出行装备清单
           </h2>
-          <span className="shrink-0 px-5 py-2 rounded-full bg-blue-50 text-blue-700 text-sm font-bold tabular-nums">
+          <span className="shrink-0 px-5 py-2 rounded-full text-sm font-bold tabular-nums" style={{ backgroundColor: 'rgba(74, 124, 111, 0.1)', color: '#4A7C6F' }}>
             {checkedCount}/{totalItems}
           </span>
         </div>
-        {/* 进度条（CSS transition 替代 motion） */}
         <div className="mt-6 h-1.5 w-full rounded-full bg-slate-100 overflow-hidden">
           <div
-            className="h-full rounded-full bg-slate-900 transition-[width] duration-700 ease-out will-change-[width]"
-            style={{ width: `${progressPercent}%` }}
+            className="h-full rounded-full transition-[width] duration-700 ease-out will-change-[width]"
+            style={{ width: `${progressPercent}%`, background: 'linear-gradient(90deg, #B84233 0%, #C4A265 100%)' }}
           />
         </div>
       </div>
 
-      {/* ── 分类列表 ── */}
       <div
         ref={gridRef}
         className="grid grid-cols-1 md:grid-cols-2 gap-6 will-change-transform"
@@ -164,15 +171,17 @@ function ChecklistSection() {
           return (
             <div
               key={cat.id}
-              className="rounded-3xl border border-slate-100 bg-white shadow-sm hover:shadow-xl transition-shadow duration-300 overflow-hidden"
+              className="card-3d rounded-3xl border border-slate-100 bg-white overflow-hidden"
             >
-              {/* 分类标题栏 */}
               <button
                 type="button"
                 onClick={() => toggleCategory(cat.id)}
                 className="w-full flex items-center gap-4 px-6 py-5 text-left hover:bg-slate-50 transition-colors"
               >
-                <div className="flex size-11 items-center justify-center rounded-2xl bg-slate-100 text-slate-500 shrink-0 group-hover:bg-blue-50 group-hover:text-blue-600 transition-colors">
+                <div 
+                  className="flex size-11 items-center justify-center rounded-2xl shrink-0 transition-colors"
+                  style={{ backgroundColor: cat.bgColor, color: cat.color }}
+                >
                   <Icon className="size-5" />
                 </div>
                 <span className="flex-1 text-base font-bold text-slate-800">
@@ -189,7 +198,6 @@ function ChecklistSection() {
                 />
               </button>
 
-              {/* 子项列表 */}
               {!isCollapsed && (
                 <ul className="border-t border-slate-50 divide-y divide-slate-50">
                   {cat.items.map((item) => {
@@ -210,9 +218,10 @@ function ChecklistSection() {
                             className={cn(
                               'flex size-5 shrink-0 items-center justify-center rounded-md border transition-all duration-200',
                               isChecked
-                                ? 'border-slate-900 bg-slate-900 text-white'
+                                ? 'text-white'
                                 : 'border-slate-200 bg-transparent',
                             )}
+                            style={isChecked ? { backgroundColor: '#B84233', borderColor: '#B84233' } : {}}
                           >
                             {isChecked && <Check className="size-3" />}
                           </span>

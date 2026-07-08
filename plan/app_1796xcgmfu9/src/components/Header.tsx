@@ -16,6 +16,10 @@ const NAV_ITEMS: NavItem[] = [
   { label: '避坑指南', anchor: '#tips' },
 ];
 
+const cinnabarRed = '#B84233';
+const goldColor = '#C4A265';
+const creamWhite = '#FBF8F3';
+
 export default function Header() {
   const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
@@ -39,9 +43,15 @@ export default function Header() {
       className={cn(
         'fixed top-0 left-0 w-full z-50 transition-all duration-500',
         scrolled
-          ? 'bg-white/90 backdrop-blur-md shadow-sm py-4'
+          ? 'backdrop-blur-md py-4'
           : 'bg-transparent py-8'
       )}
+      style={{
+        backgroundColor: scrolled ? creamWhite : 'transparent',
+        boxShadow: scrolled
+          ? `0 4px 20px rgba(184, 66, 51, 0.08), 0 10px 40px rgba(196, 162, 101, 0.12), 0 2px 8px rgba(0, 0, 0, 0.06)`
+          : 'none',
+      }}
     >
       <div className="container mx-auto px-6 md:px-12 flex items-center justify-between">
         <a
@@ -49,10 +59,31 @@ export default function Header() {
           className="flex items-center gap-3 shrink-0"
           onClick={closeMobile}
         >
-          <span className="font-serif text-2xl tracking-widest text-slate-900">
-            南京四日游
-          </span>
-          <span className="hidden sm:inline text-[10px] font-bold uppercase tracking-[0.3em] text-slate-400">
+          <div className="flex items-center gap-2">
+            <div
+              className="w-8 h-8 flex items-center justify-center rounded-sm font-bold text-white text-base shadow-sm"
+              style={{
+                backgroundColor: cinnabarRed,
+                fontFamily: 'serif',
+              }}
+            >
+              宁
+            </div>
+            <span
+              className="font-serif text-2xl tracking-widest transition-colors duration-500"
+              style={{
+                color: scrolled ? cinnabarRed : 'rgba(255,255,255,0.95)',
+              }}
+            >
+              南京四日游
+            </span>
+          </div>
+          <span
+            className="hidden sm:inline text-[10px] font-bold uppercase tracking-[0.3em] transition-colors duration-500"
+            style={{
+              color: scrolled ? goldColor : 'rgba(255,255,255,0.7)',
+            }}
+          >
             Travel Guide
           </span>
         </a>
@@ -62,9 +93,22 @@ export default function Header() {
             <a
               key={item.anchor}
               href={item.anchor}
-              className="px-4 py-2 text-sm uppercase tracking-widest font-medium transition-colors duration-300 text-slate-600 hover:text-slate-700"
+              className="relative px-4 py-2 text-sm tracking-widest font-medium transition-colors duration-300 group"
+              style={{
+                color: scrolled ? '#4A4A4A' : 'rgba(255,255,255,0.85)',
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.color = cinnabarRed;
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.color = scrolled ? '#4A4A4A' : 'rgba(255,255,255,0.85)';
+              }}
             >
               {item.label}
+              <span
+                className="absolute bottom-0 left-1/2 w-0 h-0.5 transition-all duration-300 -translate-x-1/2 group-hover:w-3/4"
+                style={{ backgroundColor: cinnabarRed }}
+              />
             </a>
           ))}
         </nav>
@@ -72,7 +116,10 @@ export default function Header() {
         <Button
           variant="ghost"
           size="icon"
-          className="md:hidden shrink-0 text-slate-900"
+          className="md:hidden shrink-0 transition-colors duration-500"
+          style={{
+            color: scrolled ? cinnabarRed : 'rgba(255,255,255,0.95)',
+          }}
           onClick={() => setMobileOpen((prev) => !prev)}
           aria-label={mobileOpen ? '关闭菜单' : '打开菜单'}
         >
@@ -81,16 +128,35 @@ export default function Header() {
       </div>
 
       {mobileOpen && (
-        <nav className="md:hidden bg-white/95 backdrop-blur-xl border-t border-slate-100">
+        <nav
+          className="md:hidden backdrop-blur-xl border-t"
+          style={{
+            backgroundColor: `${creamWhite}F5`,
+            borderColor: `${goldColor}30`,
+          }}
+        >
           <div className="px-6 py-4 space-y-1">
             {NAV_ITEMS.map((item) => (
               <a
                 key={item.anchor}
                 href={item.anchor}
                 onClick={closeMobile}
-                className="block px-4 py-3 text-sm uppercase tracking-widest font-medium rounded-2xl transition-colors duration-300 text-slate-600 hover:text-slate-700 hover:bg-slate-50"
+                className="relative block px-4 py-3 text-sm tracking-widest font-medium rounded-2xl transition-all duration-300 group overflow-hidden"
+                style={{ color: '#4A4A4A' }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.color = cinnabarRed;
+                  e.currentTarget.style.backgroundColor = `${cinnabarRed}08`;
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.color = '#4A4A4A';
+                  e.currentTarget.style.backgroundColor = 'transparent';
+                }}
               >
                 {item.label}
+                <span
+                  className="absolute bottom-1 left-4 w-0 h-0.5 transition-all duration-300 group-hover:w-8"
+                  style={{ backgroundColor: cinnabarRed }}
+                />
               </a>
             ))}
           </div>

@@ -27,10 +27,10 @@ const ICON_MAP: Record<string, typeof Lightbulb> = {
 };
 
 const CATEGORY_CONFIG: Record<string, { label: string; color: string; bg: string; icon: typeof Lightbulb }> = {
-  '美食购物': { label: '美食购物', color: 'bg-amber-50 text-amber-700 border-amber-200', bg: 'bg-amber-50', icon: ShoppingBag },
-  '交通出行': { label: '交通出行', color: 'bg-slate-100 text-slate-600 border-slate-200', bg: 'bg-slate-100', icon: Bus },
-  '景点游玩': { label: '景点游玩', color: 'bg-blue-50 text-blue-700 border-blue-200', bg: 'bg-blue-50', icon: MapPin },
-  '其他': { label: '其他', color: 'bg-slate-50 text-slate-500 border-slate-200', bg: 'bg-slate-50', icon: Info },
+  '美食购物': { label: '美食购物', color: 'bg-[#C4A265]/10 text-[#C4A265] border-[#C4A265]/20', bg: 'bg-[#C4A265]/10', icon: ShoppingBag },
+  '交通出行': { label: '交通出行', color: 'bg-[#6B7B8C]/10 text-[#6B7B8C] border-[#6B7B8C]/20', bg: 'bg-[#6B7B8C]/10', icon: Bus },
+  '景点游玩': { label: '景点游玩', color: 'bg-[#B84233]/10 text-[#B84233] border-[#B84233]/20', bg: 'bg-[#B84233]/10', icon: MapPin },
+  '其他': { label: '其他', color: 'bg-[#4A7C6F]/10 text-[#4A7C6F] border-[#4A7C6F]/20', bg: 'bg-[#4A7C6F]/10', icon: Info },
 };
 
 const CATEGORY_ORDER = ['美食购物', '交通出行', '景点游玩', '其他'] as const;
@@ -45,10 +45,10 @@ function TipCard({ tip, index }: { tip: ITip; index: number }) {
       animate={{ opacity: 1, y: 0 }}
       exit={{ opacity: 0, y: -12 }}
       transition={{ duration: 0.4, delay: Math.min(index * 0.04, 0.2), ease: [0.16, 1, 0.3, 1] as const }}
-      className="group relative rounded-3xl border border-slate-100 bg-white p-6 shadow-sm transition-all duration-300 hover:shadow-xl hover:-translate-y-1 will-change-transform"
+      className="card-3d group relative rounded-3xl border border-slate-100 bg-white p-6 will-change-transform"
     >
       <div className="flex items-start gap-4">
-        <div className={`flex size-12 shrink-0 items-center justify-center rounded-2xl transition-all duration-300 group-hover:bg-lime-400 group-hover:text-slate-900 ${cfg.bg} text-slate-500`}>
+        <div className={`flex size-12 shrink-0 items-center justify-center rounded-2xl transition-all duration-300 group-hover:bg-[#C4A265] group-hover:text-white ${cfg.bg} ${tip.category === '美食购物' ? 'text-[#C4A265]' : tip.category === '交通出行' ? 'text-[#6B7B8C]' : tip.category === '景点游玩' ? 'text-[#B84233]' : 'text-[#4A7C6F]'}`}>
           <IconComp className="size-5" />
         </div>
         <div className="min-w-0 flex-1">
@@ -107,11 +107,11 @@ export default memo(function TipsSection() {
     <div>
       {/* section header */}
       <div ref={headerRef} className="mb-12 text-center will-change-transform">
-        <span className="inline-block rounded-full border border-blue-200 bg-blue-50 px-5 py-1.5 text-[10px] font-bold uppercase tracking-[0.2em] text-blue-600">
+        <span className="inline-block rounded-full border border-[#B84233]/20 bg-[#B84233]/10 px-5 py-1.5 text-[10px] font-bold uppercase tracking-[0.2em] text-[#B84233]">
           避坑指南
         </span>
         <h2 className="mt-6 font-serif text-4xl font-bold tracking-tight text-slate-900 md:text-5xl">
-          本地人不会告诉你的 <span className="text-blue-600">省钱秘诀</span>
+          本地人不会告诉你的 <span className="text-[#B84233]">省钱秘诀</span>
         </h2>
         <p className="mt-4 text-lg font-light leading-relaxed text-slate-500">
           踩过的坑就别再踩了，帮你省下冤枉钱
@@ -129,7 +129,7 @@ export default memo(function TipsSection() {
               onClick={() => { setActiveCategory(cat); setShowAll(false); }}
               className={`rounded-full px-5 py-2 text-sm font-medium transition-all duration-300 ${
                 isActive
-                  ? 'bg-slate-900 text-white shadow-lg'
+                  ? 'bg-[#B84233] text-white shadow-lg'
                   : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
               }`}
             >

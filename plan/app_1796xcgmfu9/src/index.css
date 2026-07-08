@@ -4,9 +4,165 @@
 @import "./tailwind-theme.css";
 @import "./typography.css";
 
+/* ===== 南京特色装饰图案 ===== */
+
+/* 梅花图案（南京市花）- SVG data URI */
+.bg-plum-pattern {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='60' height='60' viewBox='0 0 60 60'%3E%3Cpath d='M30 8c-2 0-4 2-4 5s2 5 4 5 4-2 4-5-2-5-4-5zm-12 12c-2 0-4 2-4 5s2 5 4 5 4-2 4-5-2-5-4-5zm24 0c-2 0-4 2-4 5s2 5 4 5 4-2 4-5-2-5-4-5zm-18 10c-2 0-4 2-4 5s2 5 4 5 4-2 4-5-2-5-4-5zm12 0c-2 0-4 2-4 5s2 5 4 5 4-2 4-5-2-5-4-5zm-6 10c-2 0-4 2-4 5s2 5 4 5 4-2 4-5-2-5-4-5z' fill='%23B84233' fill-opacity='0.04'/%3E%3Ccircle cx='30' cy='30' r='3' fill='%23B84233' fill-opacity='0.06'/%3E%3C/svg%3E");
+  background-size: 60px 60px;
+}
+
+/* 云纹图案 - 六朝风格 */
+.bg-cloud-pattern {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='80' height='40' viewBox='0 0 80 40'%3E%3Cpath d='M0 30 Q10 10 20 20 Q30 30 40 20 Q50 10 60 20 Q70 30 80 20' stroke='%23C4A265' stroke-width='1' fill='none' stroke-opacity='0.06'/%3E%3Cpath d='M0 35 Q15 20 30 30 Q45 40 60 30 Q75 20 80 28' stroke='%23C4A265' stroke-width='0.8' fill='none' stroke-opacity='0.04'/%3E%3C/svg%3E");
+  background-size: 80px 40px;
+}
+
+/* 窗棂格图案 */
+.bg-lattice-pattern {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='40' height='40' viewBox='0 0 40 40'%3E%3Crect x='0' y='0' width='40' height='40' fill='none' stroke='%23B84233' stroke-width='0.5' stroke-opacity='0.04'/%3E%3Cpath d='M20 0 L20 40 M0 20 L40 20' stroke='%23B84233' stroke-width='0.3' stroke-opacity='0.03'/%3E%3C/svg%3E");
+  background-size: 40px 40px;
+}
+
+/* 梧桐叶纹理 */
+.bg-plane-tree {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='100' viewBox='0 0 100 100'%3E%3Cpath d='M50 10 Q70 30 65 50 Q60 70 50 80 Q40 70 35 50 Q30 30 50 10z' fill='%23C4A265' fill-opacity='0.03'/%3E%3Cpath d='M50 10 L50 80' stroke='%23C4A265' stroke-width='0.5' stroke-opacity='0.03'/%3E%3C/svg%3E");
+  background-size: 100px 100px;
+}
+
+/* ===== 3D 立体效果工具类 ===== */
+
+/* 3D 透视容器 */
+.perspective-1000 {
+  perspective: 1000px;
+}
+
+.perspective-1500 {
+  perspective: 1500px;
+}
+
+.perspective-2000 {
+  perspective: 2000px;
+}
+
+.card-3d {
+  transform-style: preserve-3d;
+  transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow: 
+    0 1px 2px rgba(0,0,0,0.04),
+    0 2px 4px rgba(0,0,0,0.06),
+    0 4px 8px rgba(0,0,0,0.06);
+}
+
+.card-3d:hover {
+  transform: translateY(-6px);
+  box-shadow:
+    0 2px 4px rgba(0,0,0,0.06),
+    0 8px 16px rgba(0,0,0,0.08),
+    0 16px 32px rgba(0,0,0,0.10),
+    0 24px 48px rgba(0,0,0,0.08);
+}
+
+/* 南京风渐变边框 */
+.border-nanjing-gradient {
+  position: relative;
+}
+
+.border-nanjing-gradient::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: 1px;
+  background: linear-gradient(135deg, rgba(184,66,51,0.2), rgba(196,162,101,0.2), rgba(74,124,111,0.15));
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  pointer-events: none;
+}
+
+/* 朱砂红左边框装饰（景点卡片特色） */
+.border-cinnabar-left {
+  border-left: 3px solid var(--nanjing-cinnabar);
+}
+
+/* 顶部高光条 */
+.gold-top-highlight {
+  position: relative;
+}
+
+.gold-top-highlight::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 10%;
+  right: 10%;
+  height: 3px;
+  background: linear-gradient(90deg, transparent, var(--nanjing-gold), transparent);
+  border-radius: 0 0 2px 2px;
+  opacity: 0.6;
+}
+
+/* 阴影层叠效果 */
+.shadow-layered {
+  box-shadow:
+    0 1px 2px rgba(26,35,50,0.04),
+    0 4px 8px rgba(26,35,50,0.03),
+    0 8px 16px rgba(26,35,50,0.04),
+    0 16px 32px rgba(26,35,50,0.03);
+}
+
+.shadow-layered-hover {
+  transition: box-shadow 0.5s cubic-bezier(0.16, 1, 0.3, 1), transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.shadow-layered-hover:hover {
+  box-shadow:
+    0 2px 4px rgba(26,35,50,0.06),
+    0 8px 16px rgba(26,35,50,0.05),
+    0 16px 32px rgba(26,35,50,0.06),
+    0 32px 64px rgba(26,35,50,0.05),
+    0 4px 12px rgba(184,66,51,0.08);
+  transform: translateY(-4px);
+}
+
+/* 朱砂光晕效果 */
+.glow-cinnabar {
+  box-shadow: 0 4px 12px rgba(184,66,51,0.15), 0 8px 24px rgba(184,66,51,0.1);
+}
+
+/* 文字立体阴影 */
+.text-shadow-depth {
+  text-shadow: 0 1px 0 rgba(255,255,255,0.8), 0 2px 4px rgba(26,35,50,0.1);
+}
+
+/* 南京风分隔装饰 */
+.nanjing-divider {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.nanjing-divider::before,
+.nanjing-divider::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--nanjing-gold), transparent);
+  opacity: 0.4;
+}
+
+/* Section 深色背景（城墙灰/黛瓦青） */
+.bg-nanjing-dark {
+  background: linear-gradient(180deg, var(--nanjing-indigo) 0%, #2A3A4A 100%);
+}
+
+.bg-nanjing-warm {
+  background: linear-gradient(180deg, #FBF8F3 0%, #F5EDE3 100%);
+}
+
 /* ===== 性能优化：CSS 动画替代 JS 无限循环动画 ===== */
 
-/* Hero 向下箭头浮动 */
 @keyframes hero-arrow-bob {
   0%, 100% { transform: translateY(0); }
   50% { transform: translateY(6px); }
@@ -17,7 +173,6 @@
   will-change: transform;
 }
 
-/* Hero 滚动提示淡入 */
 @keyframes hero-hint-fade {
   from { opacity: 0; }
   to { opacity: 1; }
@@ -27,10 +182,9 @@
   animation: hero-hint-fade 0.8s ease-out 1.8s both;
 }
 
-/* Hero 浮动装饰元素（慢速） */
 @keyframes hero-float-slow {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-8px); }
+  0%, 100% { transform: translateY(0) rotate(0deg); }
+  50% { transform: translateY(-8px) rotate(3deg); }
 }
 
 .hero-float-slow {
@@ -38,10 +192,9 @@
   will-change: transform;
 }
 
-/* Hero 浮动装饰元素（快速） */
 @keyframes hero-float-fast {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(6px); }
+  0%, 100% { transform: translateY(0) rotate(0deg); }
+  50% { transform: translateY(6px) rotate(-2deg); }
 }
 
 .hero-float-fast {
@@ -49,20 +202,61 @@
   will-change: transform;
 }
 
+/* 梅花飘落动画 */
+@keyframes plum-fall {
+  0% { transform: translateY(-10px) rotate(0deg); opacity: 0; }
+  10% { opacity: 0.6; }
+  90% { opacity: 0.3; }
+  100% { transform: translateY(100vh) rotate(360deg); opacity: 0; }
+}
+
+.plum-petal {
+  position: absolute;
+  pointer-events: none;
+  animation: plum-fall linear infinite;
+}
+
+/* 光泽扫过动画 */
+@keyframes shimmer-sweep {
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(200%); }
+}
+
+.shimmer-effect {
+  position: relative;
+  overflow: hidden;
+}
+
+.shimmer-effect::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 50%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+  animation: shimmer-sweep 3s ease-in-out infinite;
+}
+
 /* ===== 移动端性能优化 ===== */
 
-/* 移动端禁用 hover 动画以节省 GPU 资源 */
 @media (hover: none) and (pointer: coarse) {
   .hero-stack-card:hover {
     transform: none !important;
   }
+  .card-3d:hover {
+    transform: none !important;
+  }
+  .shadow-layered-hover:hover {
+    transform: none !important;
+  }
 }
 
-/* 尊重用户减少动画偏好 */
 @media (prefers-reduced-motion: reduce) {
   .hero-scroll-arrow,
   .hero-float-slow,
-  .hero-float-fast {
+  .hero-float-fast,
+  .plum-petal {
     animation: none !important;
   }
 
@@ -78,23 +272,45 @@
 
 /* ===== 全局性能优化 ===== */
 
-/* 平滑滚动（带性能优化） */
 html {
   scroll-behavior: smooth;
   -webkit-overflow-scrolling: touch;
 }
 
-/* GPU 加速提示：对动画元素启用 */
 .hero-stack-card,
 .hero-float-slow,
 .hero-float-fast,
-.hero-scroll-arrow {
+.hero-scroll-arrow,
+.card-3d,
+.shadow-layered-hover {
   transform: translateZ(0);
   backface-visibility: hidden;
-  perspective: 1000px;
 }
 
-/* 图片渲染优化 */
 img {
   content-visibility: auto;
+}
+
+/* 滚动条美化（南京风格） */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--nanjing-mist);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--nanjing-wall-light);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--nanjing-cinnabar);
+}
+
+/* 选中文本颜色 */
+::selection {
+  background-color: rgba(184, 66, 51, 0.15);
+  color: var(--nanjing-cinnabar-dark);
 }

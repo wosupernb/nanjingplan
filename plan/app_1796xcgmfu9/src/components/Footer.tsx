@@ -11,7 +11,6 @@ export default function Footer() {
     { label: '避坑指南', href: '#tips' },
   ];
 
-  // 页脚滚动揭示动画（GSAP）
   const contentRef = useGsapReveal<HTMLDivElement>({
     y: 20,
     duration: 0.6,
@@ -19,23 +18,24 @@ export default function Footer() {
   });
 
   return (
-    <footer className="w-full bg-white border-t border-slate-100">
+    <footer className="w-full relative" style={{ backgroundColor: '#1A2332' }}>
+      <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-[#B84233] to-[#C4A265]"></div>
       <div className="container mx-auto px-6 md:px-12 py-16">
         <div
           ref={contentRef}
           className="grid grid-cols-1 md:grid-cols-3 gap-12 will-change-transform"
         >
           <div className="space-y-4">
-            <h3 className="text-2xl font-light tracking-widest text-slate-900" style={{ fontFamily: "'Noto Serif SC', serif" }}>
+            <h3 className="text-2xl font-light tracking-widest" style={{ fontFamily: "'Noto Serif SC', serif", color: '#C4A265' }}>
               南京四日游
             </h3>
-            <p className="text-sm text-slate-500 leading-relaxed max-w-xs">
+            <p className="text-sm leading-relaxed max-w-xs" style={{ color: 'rgba(255,255,255,0.6)' }}>
               一份面向学生党的南京四日极致省钱攻略指南，涵盖行程规划、预算控制、交通票务与避坑建议。
             </p>
           </div>
 
           <div className="space-y-4">
-            <p className="text-xs font-bold uppercase tracking-[0.2em] text-slate-400">
+            <p className="text-xs font-bold uppercase tracking-[0.2em]" style={{ color: '#C4A265' }}>
               快速导航
             </p>
             <div className="grid grid-cols-2 gap-2">
@@ -43,7 +43,10 @@ export default function Footer() {
                 <a
                   key={item.label}
                   href={item.href}
-                  className="text-sm text-slate-500 hover:text-blue-600 transition-colors duration-200"
+                  className="text-sm transition-colors duration-200"
+                  style={{ color: 'rgba(255,255,255,0.6)' }}
+                  onMouseEnter={(e) => e.currentTarget.style.color = '#B84233'}
+                  onMouseLeave={(e) => e.currentTarget.style.color = 'rgba(255,255,255,0.6)'}
                 >
                   {item.label}
                 </a>
@@ -52,13 +55,16 @@ export default function Footer() {
           </div>
 
           <div className="space-y-4">
-            <p className="text-xs font-bold uppercase tracking-[0.2em] text-slate-400">
+            <p className="text-xs font-bold uppercase tracking-[0.2em]" style={{ color: '#C4A265' }}>
               分享给朋友
             </p>
             <div className="flex items-center gap-3">
               <button
                 type="button"
-                className="flex items-center justify-center size-10 rounded-full bg-slate-50 text-slate-400 hover:bg-blue-50 hover:text-blue-600 hover:scale-110 active:scale-95 transition-all duration-200 will-change-transform"
+                className="flex items-center justify-center size-10 rounded-full hover:scale-110 active:scale-95 transition-all duration-200 will-change-transform"
+                style={{ backgroundColor: 'rgba(255,255,255,0.08)', color: 'rgba(255,255,255,0.5)' }}
+                onMouseEnter={(e) => { e.currentTarget.style.backgroundColor = '#B84233'; e.currentTarget.style.color = '#fff'; }}
+                onMouseLeave={(e) => { e.currentTarget.style.backgroundColor = 'rgba(255,255,255,0.08)'; e.currentTarget.style.color = 'rgba(255,255,255,0.5)'; }}
                 aria-label="微信分享"
               >
                 <svg className="size-4" viewBox="0 0 24 24" fill="currentColor">
@@ -67,7 +73,10 @@ export default function Footer() {
               </button>
               <button
                 type="button"
-                className="flex items-center justify-center size-10 rounded-full bg-slate-50 text-slate-400 hover:bg-blue-50 hover:text-blue-600 hover:scale-110 active:scale-95 transition-all duration-200 will-change-transform"
+                className="flex items-center justify-center size-10 rounded-full hover:scale-110 active:scale-95 transition-all duration-200 will-change-transform"
+                style={{ backgroundColor: 'rgba(255,255,255,0.08)', color: 'rgba(255,255,255,0.5)' }}
+                onMouseEnter={(e) => { e.currentTarget.style.backgroundColor = '#B84233'; e.currentTarget.style.color = '#fff'; }}
+                onMouseLeave={(e) => { e.currentTarget.style.backgroundColor = 'rgba(255,255,255,0.08)'; e.currentTarget.style.color = 'rgba(255,255,255,0.5)'; }}
                 aria-label="微博分享"
               >
                 <svg className="size-4" viewBox="0 0 24 24" fill="currentColor">
@@ -76,7 +85,10 @@ export default function Footer() {
               </button>
               <button
                 type="button"
-                className="flex items-center justify-center size-10 rounded-full bg-slate-50 text-slate-400 hover:bg-blue-50 hover:text-blue-600 hover:scale-110 active:scale-95 transition-all duration-200 will-change-transform"
+                className="flex items-center justify-center size-10 rounded-full hover:scale-110 active:scale-95 transition-all duration-200 will-change-transform"
+                style={{ backgroundColor: 'rgba(255,255,255,0.08)', color: 'rgba(255,255,255,0.5)' }}
+                onMouseEnter={(e) => { e.currentTarget.style.backgroundColor = '#B84233'; e.currentTarget.style.color = '#fff'; }}
+                onMouseLeave={(e) => { e.currentTarget.style.backgroundColor = 'rgba(255,255,255,0.08)'; e.currentTarget.style.color = 'rgba(255,255,255,0.5)'; }}
                 aria-label="小红书分享"
               >
                 <svg className="size-4" viewBox="0 0 24 24" fill="currentColor">
@@ -87,13 +99,27 @@ export default function Footer() {
           </div>
         </div>
 
-        <div className="mt-12 pt-8 border-t border-slate-100 flex flex-col md:flex-row items-center justify-between gap-4">
-          <p className="text-xs font-bold uppercase tracking-[0.2em] text-slate-400">
+        <div className="mt-12 pt-8 relative flex flex-col md:flex-row items-center justify-between gap-4">
+          <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-[#B84233] via-[#C4A265] to-transparent"></div>
+          <p className="text-xs font-bold uppercase tracking-[0.2em]" style={{ color: 'rgba(196, 162, 101, 0.7)' }}>
             &copy; {currentYear} 南京四日游攻略 · 学生党极致省钱版
           </p>
-          <p className="text-xs text-slate-400">
-            内容仅供参考，出行前请以官方信息为准
-          </p>
+          <div className="flex items-center gap-4">
+            <p className="text-xs" style={{ color: 'rgba(255,255,255,0.4)' }}>
+              内容仅供参考，出行前请以官方信息为准
+            </p>
+            <div 
+              className="w-12 h-12 flex items-center justify-center text-white font-bold text-lg tracking-wider"
+              style={{ 
+                backgroundColor: '#B84233',
+                fontFamily: "'Noto Serif SC', serif",
+                boxShadow: '2px 2px 0 rgba(0,0,0,0.2)',
+                transform: 'rotate(-2deg)'
+              }}
+            >
+              金陵
+            </div>
+          </div>
         </div>
       </div>
     </footer>

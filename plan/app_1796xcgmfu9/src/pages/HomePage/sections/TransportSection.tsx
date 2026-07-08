@@ -32,7 +32,7 @@ export default function TransportSection() {
     <div className="w-full max-w-3xl mx-auto">
       {/* Section Header */}
       <div ref={headerRef} className="mb-12 md:mb-16 will-change-transform">
-        <p className="text-xs font-bold uppercase tracking-[0.25em] text-blue-600 mb-4">
+        <p className="text-xs font-bold uppercase tracking-[0.25em] text-[#B84233] mb-4">
           Transport
         </p>
         <h2 className="text-4xl md:text-5xl font-light text-slate-900 serif-font tracking-tight">
@@ -54,14 +54,14 @@ export default function TransportSection() {
           return (
             <div
               key={t.id}
-              className="group relative overflow-hidden rounded-[3rem] bg-white border border-slate-100 shadow-sm hover:shadow-[0_25px_60px_-15px_rgba(0_0_0_0.10)] transition-all duration-500 hover:-translate-y-1.5 will-change-transform"
+              className="card-3d group relative overflow-hidden rounded-[3rem] bg-white border border-slate-100 will-change-transform"
             >
               {/* Top decorative stripe */}
               <div
                 className={`h-1.5 w-full ${
                   isFlight
-                    ? 'bg-gradient-to-r from-slate-900 via-blue-600 to-slate-900/30'
-                    : 'bg-gradient-to-r from-slate-900 via-lime-400 to-slate-900/30'
+                    ? 'bg-gradient-to-r from-[#3D4F5F] via-[#B84233] to-[#3D4F5F]/30'
+                    : 'bg-gradient-to-r from-[#4A7C6F] via-[#C4A265] to-[#4A7C6F]/30'
                 }`}
               />
 
@@ -72,8 +72,8 @@ export default function TransportSection() {
                     <div
                       className={`size-11 rounded-2xl flex items-center justify-center ${
                         isFlight
-                          ? 'bg-blue-50 text-blue-600'
-                          : 'bg-lime-50 text-lime-600'
+                          ? 'bg-[#B84233]/10 text-[#B84233]'
+                          : 'bg-[#C4A265]/10 text-[#C4A265]'
                       }`}
                     >
                       <Icon className="size-5" />
@@ -88,8 +88,8 @@ export default function TransportSection() {
                   <span
                     className={`text-[10px] font-bold uppercase tracking-[0.2em] px-4 py-1.5 rounded-full ${
                       isFlight
-                        ? 'bg-blue-50 text-blue-700'
-                        : 'bg-lime-50 text-lime-700'
+                        ? 'bg-[#B84233]/10 text-[#B84233]'
+                        : 'bg-[#C4A265]/10 text-[#C4A265]'
                     }`}
                   >
                     {t.seatClass}
@@ -151,7 +151,7 @@ export default function TransportSection() {
                     </span>
                   </div>
                   <div className="text-right">
-                    <p className="text-3xl font-light text-slate-900 tabular-nums serif-font">
+                    <p className="text-3xl font-light text-[#B84233] tabular-nums serif-font">
                       ¥{t.price}
                     </p>
                     <p className="text-[10px] font-medium text-slate-400 uppercase tracking-wider">

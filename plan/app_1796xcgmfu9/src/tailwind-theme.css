@@ -2,58 +2,72 @@
   --button-outline: rgba(0,0,0, .10);
   --badge-outline: rgba(0,0,0, .05);
 
-  /* Automatic computation of border around primary / danger buttons */
-  --opaque-button-border-intensity: -8; /* In terms of percentages */
+  --opaque-button-border-intensity: -8;
 
-  /* Backgrounds applied on top of other backgrounds when hovered/active */
   --elevate-1: rgba(0,0,0, .03);
   --elevate-2: rgba(0,0,0, .08);
 
-  --background: hsl(210 40% 98%);
-  --foreground: hsl(222 47% 11%);
+  /* ===== 南京特色配色 ===== */
+  --nanjing-cinnabar: #B84233;
+  --nanjing-cinnabar-light: #D4574A;
+  --nanjing-cinnabar-dark: #8F3228;
+  --nanjing-gold: #C4A265;
+  --nanjing-gold-light: #D9BE82;
+  --nanjing-gold-dark: #A8884A;
+  --nanjing-wall: #6B7B8C;
+  --nanjing-wall-light: #8FA0B0;
+  --nanjing-jade: #4A7C6F;
+  --nanjing-jade-light: #5E9A8A;
+  --nanjing-indigo: #3D4F5F;
+  --nanjing-indigo-light: #5A7084;
+  --nanjing-mist: #EDF0F3;
+  --nanjing-cream: #FBF8F3;
+  --nanjing-ink: #1A2332;
+
+  --background: var(--nanjing-cream);
+  --foreground: var(--nanjing-ink);
   --card: hsl(0 0% 100%);
-  --card-foreground: hsl(222 47% 11%);
+  --card-foreground: var(--nanjing-ink);
   --popover: hsl(0 0% 100%);
-  --popover-foreground: hsl(222 47% 11%);
-  --primary: hsl(222 47% 11%);
+  --popover-foreground: var(--nanjing-ink);
+  --primary: var(--nanjing-cinnabar);
   --primary-foreground: hsl(210 40% 98%);
-  --secondary: hsl(210 40% 96%);
-  --secondary-foreground: hsl(222 47% 11%);
-  --muted: hsl(210 40% 96%);
+  --secondary: var(--nanjing-mist);
+  --secondary-foreground: var(--nanjing-indigo);
+  --muted: var(--nanjing-mist);
   --muted-foreground: hsl(215 16% 47%);
-  --accent: hsl(214 100% 97%);
-  --accent-foreground: hsl(221 83% 53%);
-  --info: hsl(221 83% 53%);
+  --accent: #FDF2E9;
+  --accent-foreground: var(--nanjing-cinnabar);
+  --info: var(--nanjing-indigo);
   --info-foreground: hsl(230 100% 98%);
   --destructive: hsl(0 84% 60%);
   --destructive-foreground: hsl(210 40% 98%);
-  --success: hsl(142 71% 45%);
+  --success: var(--nanjing-jade);
   --success-foreground: hsl(115 77% 97%);
-  --warning: hsl(28 65% 52%);
+  --warning: var(--nanjing-gold);
   --warning-foreground: hsl(33 100% 96%);
-  --border: hsl(210 40% 96%);
-  --input: hsl(210 40% 96%);
-  --ring: hsl(221 83% 53%);
-  --chart-1: hsl(222 47% 11%);
-  --chart-2: hsl(221 83% 53%);
-  --chart-3: hsl(215 16% 47%);
-  --chart-4: hsl(142 71% 45%);
-  --chart-5: hsl(80 70% 55%);
-  --sidebar: hsl(222 47% 11%);
+  --border: hsl(210 20% 92%);
+  --input: hsl(210 20% 92%);
+  --ring: var(--nanjing-cinnabar);
+  --chart-1: var(--nanjing-cinnabar);
+  --chart-2: var(--nanjing-indigo);
+  --chart-3: var(--nanjing-gold);
+  --chart-4: var(--nanjing-jade);
+  --chart-5: var(--nanjing-wall);
+  --sidebar: var(--nanjing-indigo);
   --sidebar-foreground: hsl(210 40% 98%);
-  --sidebar-primary: hsl(221 83% 53%);
+  --sidebar-primary: var(--nanjing-cinnabar);
   --sidebar-primary-foreground: hsl(210 40% 98%);
-  --sidebar-accent: hsl(217 33% 17%);
+  --sidebar-accent: hsl(217 20% 25%);
   --sidebar-accent-foreground: hsl(210 40% 98%);
-  --sidebar-border: hsl(217 33% 17%);
-  --sidebar-ring: hsl(221 83% 53%);
+  --sidebar-border: hsl(217 20% 25%);
+  --sidebar-ring: var(--nanjing-cinnabar);
 
-  /* Computed borders using hsl relative color syntax */
-  --primary-border: hsl(from hsl(222 47% 11%) h s calc(l + var(--opaque-button-border-intensity)));
-  --secondary-border: hsl(from hsl(210 40% 96%) h s calc(l + var(--opaque-button-border-intensity)));
+  --primary-border: color-mix(in srgb, var(--nanjing-cinnabar) 85%, black);
+  --secondary-border: hsl(from var(--nanjing-mist) h s calc(l + var(--opaque-button-border-intensity)));
   --destructive-border: hsl(from hsl(0 84% 60%) h s calc(l + var(--opaque-button-border-intensity)));
-  --accent-border: hsl(from hsl(214 100% 97%) h s calc(l + var(--opaque-button-border-intensity)));
-  --muted-border: hsl(from hsl(210 40% 96%) h s calc(l + var(--opaque-button-border-intensity)));
+  --accent-border: hsl(from #FDF2E9 h s calc(l + var(--opaque-button-border-intensity)));
+  --muted-border: hsl(from var(--nanjing-mist) h s calc(l + var(--opaque-button-border-intensity)));
   --font-sans:
     'Inter', 'LarkHackSafariFont', 'LarkEmojiFont', 'LarkChineseQuote', '-apple-system',
     'BlinkMacSystemFont', 'Helvetica Neue', 'Tahoma', 'PingFang SC',
@@ -63,26 +77,31 @@
     'Noto Serif SC', 'Geist', 'Geist Fallback', ui-serif, Georgia, Cambria,
     'Times New Roman', Times, serif;
   --font-mono: Source Code Pro, monospace;
-  --radius: 1rem;
-  --shadow-x: 0px;
-  --shadow-y: 2px;
-  --shadow-blur: 12px;
-  --shadow-spread: 0px;
-  --shadow-opacity: 0.02;
-  --shadow-color: #000000;
-  --shadow-2xs: 0px 2px 12px 0px hsl(0 0% 0% / 0.01);
-  --shadow-xs: 0px 2px 12px 0px hsl(0 0% 0% / 0.01);
-  --shadow-sm:
-    0px 2px 12px 0px hsl(0 0% 0% / 0.02), 0px 1px 2px -1px hsl(0 0% 0% / 0.02);
-  --shadow:
-    0px 2px 12px 0px hsl(0 0% 0% / 0.02), 0px 1px 2px -1px hsl(0 0% 0% / 0.02);
-  --shadow-md:
-    0px 2px 12px 0px hsl(0 0% 0% / 0.02), 0px 2px 4px -1px hsl(0 0% 0% / 0.02);
-  --shadow-lg:
-    0px 2px 12px 0px hsl(0 0% 0% / 0.02), 0px 4px 6px -1px hsl(0 0% 0% / 0.02);
-  --shadow-xl:
-    0px 2px 12px 0px hsl(0 0% 0% / 0.02), 0px 8px 10px -1px hsl(0 0% 0% / 0.02);
-  --shadow-2xl: 0px 2px 12px 0px hsl(0 0% 0% / 0.05);
+  --radius: 1.25rem;
+
+  /* ===== 多层阴影系统（立体感） ===== */
+  --shadow-color-cinnabar: 184 66 51;
+  --shadow-color-ink: 26 35 50;
+
+  /* 基础层 - 近距离弥散阴影 */
+  --shadow-near: 0 1px 2px rgba(var(--shadow-color-ink), 0.04), 0 2px 4px rgba(var(--shadow-color-ink), 0.03);
+  /* 中层 - 卡片标准阴影 */
+  --shadow-mid: 0 4px 8px rgba(var(--shadow-color-ink), 0.04), 0 8px 16px rgba(var(--shadow-color-ink), 0.03);
+  /* 远层 - 悬浮深度阴影 */
+  --shadow-far: 0 8px 16px rgba(var(--shadow-color-ink), 0.06), 0 16px 32px rgba(var(--shadow-color-ink), 0.04), 0 32px 64px rgba(var(--shadow-color-ink), 0.03);
+  /* 朱砂色调阴影 - 重点元素 */
+  --shadow-cinnabar: 0 4px 12px rgba(var(--shadow-color-cinnabar), 0.15), 0 8px 24px rgba(var(--shadow-color-cinnabar), 0.1);
+  /* 内阴影 - 凹陷感 */
+  --shadow-inset: inset 0 2px 4px rgba(var(--shadow-color-ink), 0.04), inset 0 -1px 2px rgba(255,255,255,0.5);
+
+  --shadow-2xs: 0 1px 2px rgba(var(--shadow-color-ink), 0.03);
+  --shadow-xs: 0 1px 3px rgba(var(--shadow-color-ink), 0.04), 0 1px 2px rgba(var(--shadow-color-ink), 0.03);
+  --shadow-sm: 0 2px 4px rgba(var(--shadow-color-ink), 0.04), 0 1px 2px rgba(var(--shadow-color-ink), 0.03);
+  --shadow: var(--shadow-near);
+  --shadow-md: var(--shadow-mid);
+  --shadow-lg: var(--shadow-far);
+  --shadow-xl: 0 12px 24px rgba(var(--shadow-color-ink), 0.08), 0 24px 48px rgba(var(--shadow-color-ink), 0.05), 0 2px 4px rgba(var(--shadow-color-ink), 0.04);
+  --shadow-2xl: 0 16px 32px rgba(var(--shadow-color-ink), 0.1), 0 32px 64px rgba(var(--shadow-color-ink), 0.06);
   --tracking-normal: 0em;
   --spacing: 0.25rem;
 }
@@ -127,10 +146,21 @@
   --color-sidebar-border: var(--sidebar-border);
   --color-sidebar-ring: var(--sidebar-ring);
 
+  /* 南京特色色 */
+  --color-nanjing-cinnabar: var(--nanjing-cinnabar);
+  --color-nanjing-cinnabar-light: var(--nanjing-cinnabar-light);
+  --color-nanjing-gold: var(--nanjing-gold);
+  --color-nanjing-gold-light: var(--nanjing-gold-light);
+  --color-nanjing-wall: var(--nanjing-wall);
+  --color-nanjing-jade: var(--nanjing-jade);
+  --color-nanjing-indigo: var(--nanjing-indigo);
+  --color-nanjing-mist: var(--nanjing-mist);
+  --color-nanjing-cream: var(--nanjing-cream);
+  --color-nanjing-ink: var(--nanjing-ink);
+
   --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
   --font-serif: 'Noto Serif SC', serif;
   --font-mono: var(--font-mono);
-  --font-serif: var(--font-serif);
 
   --radius-sm: calc(var(--radius) - 4px);
   --radius-md: calc(var(--radius) - 2px);
@@ -147,75 +177,38 @@
   --shadow-2xl: var(--shadow-2xl);
 }
 
-/**
- * Using the elevate system.
- * Automatic contrast adjustment.
- *
- * <element className="hover-elevate" />
- * <element className="active-elevate-2" />
- *
- * // Using the tailwind utility when a data attribute is "on"
- * <element className="toggle-elevate data-[state=on]:toggle-elevated" />
- * // Or manually controlling the toggle state
- * <element className="toggle-elevate toggle-elevated" />
- *
- * Elevation systems have to handle many states.
- * - not-hovered, vs. hovered vs. active  (three mutually exclusive states)
- * - toggled or not
- * - focused or not (this is not handled with these utilities)
- *
- * Even without handling focused or not, this is six possible combinations that
- * need to be distinguished from eachother visually.
- */
 @layer utilities {
-  /* Hide ugly search cancel button in Chrome until we can style it properly */
   input[type="search"]::-webkit-search-cancel-button {
     @apply hidden;
   }
 
-  /* Placeholder styling for contentEditable div */
   [contenteditable][data-placeholder]:empty::before {
     content: attr(data-placeholder);
     color: var(--muted-foreground);
     pointer-events: none;
   }
 
-  /* .no-default-hover-elevate/no-default-active-elevate is an escape hatch so consumers of
-   * buttons/badges can remove the automatic brightness adjustment on interactions
-   * and program their own. */
   .no-default-hover-elevate {}
   .no-default-active-elevate {}
 
-
-  /**
-   * Toggleable backgrounds go behind the content. Hoverable/active goes on top.
-   * This way they can stack/compound. Both will overlap the parent's borders!
-   * So borders will be automatically adjusted both on toggle, and hover/active,
-   * and they will be compounded.
-   */
   .toggle-elevate::before,
   .toggle-elevate-2::before {
     content: "";
     pointer-events: none;
     position: absolute;
     inset: 0px;
-    /*border-radius: inherit;   match rounded corners */
     border-radius: inherit;
     z-index: -1;
-    /* sits behind content but above backdrop */
   }
 
   .toggle-elevate.toggle-elevated::before {
     background-color: var(--elevate-2);
   }
 
-  /* If there's a 1px border, adjust the inset so that it covers that parent's border */
   .border.toggle-elevate::before {
     inset: -1px;
   }
 
-  /* Does not work on elements with overflow:hidden!
-   * Wrap in :where() to zero out specificity so Tailwind position utilities (absolute/fixed/sticky) can override */
   :where(.hover-elevate:not(.no-default-hover-elevate)),
   :where(.active-elevate:not(.no-default-active-elevate)),
   :where(.hover-elevate-2:not(.no-default-hover-elevate)),
@@ -232,10 +225,8 @@
     pointer-events: none;
     position: absolute;
     inset: 0px;
-    /*border-radius: inherit;   match rounded corners */
     border-radius: inherit;
     z-index: 999;
-    /* sits in front of content */
   }
 
   .hover-elevate:hover:not(.no-default-hover-elevate)::after,
@@ -248,7 +239,6 @@
     background-color: var(--elevate-2);
   }
 
-  /* If there's a 1px border, adjust the inset so that it covers that parent's border */
   .border.hover-elevate:not(.no-hover-interaction-elevate)::after,
   .border.active-elevate:not(.no-active-interaction-elevate)::after,
   .border.hover-elevate-2:not(.no-hover-interaction-elevate)::after,
