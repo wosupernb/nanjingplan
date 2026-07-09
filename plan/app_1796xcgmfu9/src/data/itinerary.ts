@@ -1,4 +1,4 @@
-﻿// EXPORTS: IItineraryDay, IItinerarySpot, MOCK_ITINERARY
+// EXPORTS: IItineraryDay, IItinerarySpot, MOCK_ITINERARY
 
 /** 景点内部路线步骤 */
 export interface IRouteStep {
@@ -89,7 +89,7 @@ export const MOCK_ITINERARY: IItineraryDay[] = [
         fee: 0,
         feeNote: '免费参观',
         transport: '地铁5号线 三山街→下关站',
-        imageUrl: '',
+        imageUrl: '/images/中山码头.jpg',
         tip: '高德评分4.8，营业时间06:00-19:00',
         coordinates: { lng: 118.733456, lat: 32.087671 },
         highlights: [
@@ -123,7 +123,7 @@ export const MOCK_ITINERARY: IItineraryDay[] = [
         fee: 2,
         feeNote: '刷公交卡/支付宝',
         transport: '中山码头→浦口码头',
-        imageUrl: '',
+        imageUrl: '/images/宁浦线轮渡.jpg',
         tip: '★甲板拍长江日落！7月日落约19:00',
         coordinates: { lng: 118.722443, lat: 32.095517 },
         highlights: [
@@ -157,7 +157,7 @@ export const MOCK_ITINERARY: IItineraryDay[] = [
         fee: 0,
         feeNote: '免费参观',
         transport: '浦口码头出站步行5分钟',
-        imageUrl: '',
+        imageUrl: '/images/浦口火车站旧址.jpg',
         tip: '★朱自清《背影》场景！高德评分4.6',
         coordinates: { lng: 118.720209, lat: 32.097647 },
         highlights: [
@@ -191,7 +191,7 @@ export const MOCK_ITINERARY: IItineraryDay[] = [
         fee: 0,
         feeNote: '免费开放',
         transport: '浦口码头→轮渡回中山码头→沿江边路南行步行15分钟',
-        imageUrl: '',
+        imageUrl: '/images/下关西火车主题园.jpg',
         tip: '★绿皮火车+长江日落！高德评分4.6',
         coordinates: { lng: 118.743868, lat: 32.10391 },
         highlights: [
