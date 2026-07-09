@@ -48,13 +48,13 @@ const SPOT_ROUTES: Record<string, ISpotRoute> = {
   },
   '总统府': {
     route: [
-      { label: '中轴线', duration: '1h', desc: '大堂"天下为公"匾额→二堂→礼堂（彩色玻璃窗）→麒麟门→子超楼（蒋介石办公室）' },
-      { label: '东花园', duration: '30min', desc: '防空洞→行政院→复园→两江总督馆' },
-      { label: '西花园', duration: '30min', desc: '石舫（不系舟）→桐音馆→夕佳楼→孙中山临时大总统办公室' },
+      { label: '中轴线', duration: '45min', desc: '★精华路线：大堂"天下为公"匾额→二堂→礼堂（彩色玻璃窗）→麒麟门→子超楼（蒋介石办公室）' },
+      { label: '东花园', duration: '20min', desc: '防空洞→行政院，快速浏览' },
+      { label: '西花园', duration: '25min', desc: '★石舫（不系舟）→桐音馆→孙中山临时大总统办公室' },
     ],
     highlights: ['天下为公匾额', '礼堂彩色玻璃窗', '石舫倒影', '子超楼蒋介石办公室'],
     photoSpots: ['天下为公匾额正下方仰拍', '礼堂彩色玻璃窗逆光', '石舫（不系舟）水面倒影'],
-    notes: ['提前5天预约', '中轴线人最多，建议早到先走'],
+    notes: ['提前5天预约', '★1.5h精华游，只走中轴+西花园石舫', '中轴线人最多，建议早到先走'],
     coordinates: { lng: 118.7967, lat: 32.0458 },
     transit: [
       { mode: '地铁', time: '约20分钟', cost: '¥3', icon: Train },
