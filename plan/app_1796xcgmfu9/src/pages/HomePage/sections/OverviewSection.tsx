@@ -2,7 +2,7 @@ import { memo } from 'react';
 import { ArrowRight } from 'lucide-react';
 import { MOCK_ITINERARY } from '@/data/itinerary';
 import type { IItineraryDay } from '@/data/itinerary';
-import { useGsapReveal } from '@/hooks/useGsap';
+import { useGsapReveal, useGsapFlyText } from '@/hooks/useGsap';
 
 interface OverviewNode {
   id: string;
@@ -55,6 +55,7 @@ function OverviewSection() {
     delay: 0.15,
     start: 'top 90%',
   });
+  const flyTextRef = useGsapFlyText<HTMLDivElement>({ start: 'top 85%' });
 
   const handleNodeClick = (anchor: string) => {
     const id = anchor.replace('#', '');
@@ -67,12 +68,12 @@ function OverviewSection() {
   const getDayColor = (day: number) => DAY_COLORS[day] || '#B84233';
 
   return (
-    <section className="w-full">
+    <section ref={flyTextRef} className="w-full">
       <div ref={headerRef} className="text-center mb-16 md:mb-20 will-change-transform">
         <span className="inline-block text-[10px] font-bold tracking-[0.25em] uppercase mb-4" style={{ color: '#6B7B8C' }}>
           Itinerary Overview
         </span>
-        <h2 className="text-4xl md:text-5xl font-light tracking-tight font-[family-name:var(--font-serif)] relative inline-block" style={{ color: '#1A2332' }}>
+        <h2 className="fly-text text-4xl md:text-5xl font-light tracking-tight font-[family-name:var(--font-serif)] relative inline-block" style={{ color: '#1A2332' }}>
           行程总览
           <span className="absolute -bottom-3 left-1/2 -translate-x-1/2 w-20 h-0.5 rounded-full" style={{ background: 'linear-gradient(90deg, #B84233, #C4A265)' }} />
         </h2>

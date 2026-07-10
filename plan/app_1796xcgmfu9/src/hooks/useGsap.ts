@@ -438,3 +438,86 @@ export function useGsapScrollProgress<T extends HTMLElement = HTMLDivElement>() 
 
   return ref;
 }
+
+/**
+ * 文字飞入动画 Hook（Fly Text Effect · scrub 跟随滚动版）
+ * - 将 .fly-text 内的文字按字符拆分，每个字符包裹在 <span class="fly-char"> 中
+ * - 初始状态：opacity: 0, translateY(40px)
+ * - 动画跟随滚动进度：滑一点，文字飞入一点
+ *   - 每个字符延迟 30ms
+ *   - 动画时长 600ms
+ *   - 缓动函数：power2.out
+ *   - 最终状态：opacity: 1, translateY(0)
+ */
+function splitTextToChars(el: HTMLElement): HTMLElement[] {
+  const chars: HTMLElement[] = [];
+  const walker = document.createTreeWalker(el, NodeFilter.SHOW_TEXT, null);
+  const textNodes: Text[] = [];
+  let node = walker.nextNode();
+  while (node) {
+    textNodes.push(node as Text);
+    node = walker.nextNode();
+  }
+
+  textNodes.forEach((textNode) => {
+    const text = textNode.textContent || '';
+    const fragment = document.createDocumentFragment();
+    for (const char of text) {
+      if (char === ' ' || char === '\n' || char === '\t') {
+        fragment.appendChild(document.createTextNode(char));
+      } else {
+        const span = document.createElement('span');
+        span.className = 'fly-char';
+        span.textContent = char;
+        fragment.appendChild(span);
+        chars.push(span);
+      }
+    }
+    textNode.replaceWith(fragment);
+  });
+
+  return chars;
+}
+
+export function useGsapFlyText<T extends HTMLElement = HTMLDivElement>(
+  options: { start?: string; end?: string } = {}
+) {
+  const ref = useRef<T>(null);
+
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+
+    const ctx = gsap.context(() => {
+      const flyTexts = el.querySelectorAll('.fly-text');
+      if (!flyTexts.length) return;
+
+      flyTexts.forEach((flyText) => {
+        const chars = splitTextToChars(flyText as HTMLElement);
+        if (!chars.length) return;
+
+        gsap.fromTo(
+          chars,
+          { opacity: 0, y: 40 },
+          {
+            opacity: 1,
+            y: 0,
+            duration: 0.6,
+            stagger: 0.03,
+            ease: 'power2.out',
+            scrollTrigger: {
+              trigger: flyText,
+              start: options.start ?? 'top 85%',
+              end: options.end ?? 'top 40%',
+              scrub: true,
+            },
+          }
+        );
+      });
+    }, ref);
+
+    return () => ctx.revert();
+  }, [options.start, options.end]);
+
+  return ref;
+}

@@ -434,7 +434,7 @@ function SpotCard({ spot, index, dayColor }: { spot: IItinerarySpot; index: numb
         <div className="w-px flex-1 mt-1" style={{ backgroundColor: dayColor.lineLight }} />
       </div>
 
-      <div className="card-3d rounded-3xl border border-slate-100 bg-white overflow-hidden">
+      <div className="glass-card card-3d rounded-3xl overflow-hidden">
         <div className="flex flex-col md:flex-row">
           {spot.imageUrl ? (
             <div className="md:w-52 lg:w-60 shrink-0 overflow-hidden">
@@ -446,12 +446,12 @@ function SpotCard({ spot, index, dayColor }: { spot: IItinerarySpot; index: numb
               />
             </div>
           ) : (
-            <div className="md:w-52 lg:w-60 shrink-0 h-44 md:h-auto flex items-center justify-center bg-slate-100">
-              <span className="text-5xl font-light text-slate-300 font-serif">{spot.name.charAt(0)}</span>
+            <div className="glass-placeholder md:w-52 lg:w-60 shrink-0 h-44 md:h-auto flex items-center justify-center">
+              <span className="text-5xl font-light font-serif" style={{ color: 'rgba(184, 66, 51, 0.35)' }}>{spot.name.charAt(0)}</span>
             </div>
           )}
 
-          <div className="flex-1 p-5 md:p-6 min-w-0">
+          <div className="glass-card-content flex-1 p-5 md:p-6 min-w-0">
             <div className="flex items-start justify-between gap-4 mb-3">
               <div className="min-w-0">
                 <h4 className="text-lg font-bold text-slate-800 truncate">{spot.name}</h4>
