@@ -1,32 +1,50 @@
-import { useState, useEffect, useCallback } from 'react';
-import { Menu, X } from 'lucide-react';
-import { Button } from '@/components/ui/button';
-import { cn } from '@/lib/utils';
+import { useState, useEffect, useCallback, useRef } from 'react';
+import { Menu, X, Map, CalendarDays, Train, Bell, Lightbulb, Calendar } from 'lucide-react';
+import type { LucideIcon } from 'lucide-react';
 
 interface NavItem {
   label: string;
   anchor: string;
+  icon: LucideIcon;
 }
 
 const NAV_ITEMS: NavItem[] = [
-  { label: '行程总览', anchor: '#overview' },
-  { label: '逐日详情', anchor: '#day1' },
-  { label: '交通票务', anchor: '#transport' },
-  { label: '预约提醒', anchor: '#booking' },
-  { label: '避坑指南', anchor: '#tips' },
+  { label: '行程总览', anchor: '#overview', icon: Map },
+  { label: '逐日详情', anchor: '#day-section', icon: CalendarDays },
+  { label: '交通票务', anchor: '#transport', icon: Train },
+  { label: '预约提醒', anchor: '#booking', icon: Bell },
+  { label: '避坑指南', anchor: '#tips', icon: Lightbulb },
 ];
+
+const TRIP_INFO = {
+  date: '7月14-17日',
+  people: '3人同行',
+};
 
 const cinnabarRed = '#B84233';
 const goldColor = '#C4A265';
-const creamWhite = '#FBF8F3';
 
-export default function Header() {
+interface HeaderProps {
+  onStateChange?: (state: { scrolled: boolean; expanded: boolean }) => void;
+}
+
+export default function Header({ onStateChange }: HeaderProps) {
   const [scrolled, setScrolled] = useState(false);
+  const [expanded, setExpanded] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
+  const [activeSection, setActiveSection] = useState<string>('');
+  const observerRef = useRef<IntersectionObserver | null>(null);
 
+  // 滚动监听：超过 Hero 区阈值时切换为 Sidebar 态
   const handleScroll = useCallback(() => {
-    setScrolled(window.scrollY > 60);
+    const threshold = window.innerHeight * 0.8;
+    setScrolled(window.scrollY > threshold);
   }, []);
+
+  // 状态变化时通知父组件（用于内容区 margin 同步）
+  useEffect(() => {
+    onStateChange?.({ scrolled, expanded });
+  }, [scrolled, expanded, onStateChange]);
 
   useEffect(() => {
     window.addEventListener('scroll', handleScroll, { passive: true });
@@ -34,131 +52,171 @@ export default function Header() {
     return () => window.removeEventListener('scroll', handleScroll);
   }, [handleScroll]);
 
+  // 滚动同步高亮：IntersectionObserver 监听各章节
+  useEffect(() => {
+    const sections = NAV_ITEMS
+      .map((item) => document.querySelector(item.anchor))
+      .filter(Boolean) as Element[];
+
+    if (sections.length === 0) return;
+
+    observerRef.current = new IntersectionObserver(
+      (entries) => {
+        // 找到当前最靠近视口顶部的可见章节
+        const visible = entries
+          .filter((e) => e.isIntersecting)
+          .sort((a, b) => b.intersectionRatio - a.intersectionRatio);
+        if (visible[0]) {
+          setActiveSection(`#${visible[0].target.id}`);
+        }
+      },
+      {
+        rootMargin: '-20% 0px -60% 0px',
+        threshold: [0, 0.25, 0.5, 0.75, 1],
+      }
+    );
+
+    sections.forEach((s) => observerRef.current?.observe(s));
+    return () => observerRef.current?.disconnect();
+  }, []);
+
   const closeMobile = useCallback(() => {
     setMobileOpen(false);
   }, []);
 
+  const handleItemClick = useCallback(
+    (e: React.MouseEvent, anchor: string) => {
+      // 移动端菜单点击后关闭
+      closeMobile();
+      // 让默认锚点跳转生效（smooth scroll 由 CSS html scroll-behavior 处理）
+    },
+    [closeMobile]
+  );
+
+  const navClass = [
+    'sidebar-nav',
+    scrolled ? 'is-sidebar' : '',
+    expanded ? 'is-expanded' : '',
+  ]
+    .filter(Boolean)
+    .join(' ');
+
   return (
     <header
-      className={cn(
-        'fixed top-0 left-0 w-full z-50 transition-all duration-500',
-        scrolled
-          ? 'backdrop-blur-md py-4'
-          : 'bg-transparent py-8'
-      )}
-      style={{
-        backgroundColor: scrolled ? creamWhite : 'transparent',
-        boxShadow: scrolled
-          ? `0 4px 20px rgba(184, 66, 51, 0.08), 0 10px 40px rgba(196, 162, 101, 0.12), 0 2px 8px rgba(0, 0, 0, 0.06)`
-          : 'none',
-      }}
+      className={navClass}
+      onMouseEnter={() => scrolled && setExpanded(true)}
+      onMouseLeave={() => scrolled && setExpanded(false)}
     >
-      <div className="container mx-auto px-6 md:px-12 flex items-center justify-between">
+      <div className="sidebar-inner">
+        {/* Logo 区 */}
         <a
           href="#hero"
-          className="flex items-center gap-3 shrink-0"
+          className="sidebar-logo"
           onClick={closeMobile}
+          style={{
+            textDecoration: 'none',
+          }}
         >
-          <div className="flex items-center gap-2">
-            <div
-              className="w-8 h-8 flex items-center justify-center rounded-sm font-bold text-white text-base shadow-sm"
-              style={{
-                backgroundColor: cinnabarRed,
-                fontFamily: 'serif',
-              }}
-            >
-              宁
-            </div>
-            <span
-              className="font-serif text-2xl tracking-widest transition-colors duration-500"
-              style={{
-                color: scrolled ? cinnabarRed : 'rgba(255,255,255,0.95)',
-              }}
-            >
-              南京四日游
-            </span>
-          </div>
+          <div className="sidebar-logo-mark">宁</div>
           <span
-            className="hidden sm:inline text-[10px] font-bold uppercase tracking-[0.3em] transition-colors duration-500"
+            className="sidebar-logo-text"
             style={{
-              color: scrolled ? goldColor : 'rgba(255,255,255,0.7)',
+              color: scrolled ? cinnabarRed : 'rgba(255,255,255,0.95)',
             }}
           >
-            Travel Guide
+            南京四日游
           </span>
+          {!scrolled && (
+            <span
+              className="sidebar-logo-sub"
+              style={{ color: goldColor }}
+            >
+              Travel Guide
+            </span>
+          )}
         </a>
 
-        <nav className="hidden md:flex items-center gap-1">
-          {NAV_ITEMS.map((item) => (
-            <a
-              key={item.anchor}
-              href={item.anchor}
-              className="relative px-4 py-2 text-sm tracking-widest font-medium transition-colors duration-300 group"
-              style={{
-                color: scrolled ? '#4A4A4A' : 'rgba(255,255,255,0.85)',
-              }}
-              onMouseEnter={(e) => {
-                e.currentTarget.style.color = cinnabarRed;
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.color = scrolled ? '#4A4A4A' : 'rgba(255,255,255,0.85)';
-              }}
-            >
-              {item.label}
-              <span
-                className="absolute bottom-0 left-1/2 w-0 h-0.5 transition-all duration-300 -translate-x-1/2 group-hover:w-3/4"
-                style={{ backgroundColor: cinnabarRed }}
-              />
-            </a>
-          ))}
-        </nav>
-
-        <Button
-          variant="ghost"
-          size="icon"
-          className="md:hidden shrink-0 transition-colors duration-500"
-          style={{
-            color: scrolled ? cinnabarRed : 'rgba(255,255,255,0.95)',
-          }}
-          onClick={() => setMobileOpen((prev) => !prev)}
-          aria-label={mobileOpen ? '关闭菜单' : '打开菜单'}
-        >
-          {mobileOpen ? <X className="size-5" /> : <Menu className="size-5" />}
-        </Button>
-      </div>
-
-      {mobileOpen && (
-        <nav
-          className="md:hidden backdrop-blur-xl border-t"
-          style={{
-            backgroundColor: `${creamWhite}F5`,
-            borderColor: `${goldColor}30`,
-          }}
-        >
-          <div className="px-6 py-4 space-y-1">
-            {NAV_ITEMS.map((item) => (
+        {/* 导航项列表 */}
+        <nav className="sidebar-items">
+          {NAV_ITEMS.map((item) => {
+            const Icon = item.icon;
+            const isActive = activeSection === item.anchor;
+            return (
               <a
                 key={item.anchor}
                 href={item.anchor}
-                onClick={closeMobile}
-                className="relative block px-4 py-3 text-sm tracking-widest font-medium rounded-2xl transition-all duration-300 group overflow-hidden"
-                style={{ color: '#4A4A4A' }}
-                onMouseEnter={(e) => {
-                  e.currentTarget.style.color = cinnabarRed;
-                  e.currentTarget.style.backgroundColor = `${cinnabarRed}08`;
-                }}
-                onMouseLeave={(e) => {
-                  e.currentTarget.style.color = '#4A4A4A';
-                  e.currentTarget.style.backgroundColor = 'transparent';
+                onClick={(e) => handleItemClick(e, item.anchor)}
+                className={`sidebar-item ${isActive ? 'is-active' : ''}`}
+                style={{
+                  color: scrolled
+                    ? isActive
+                      ? cinnabarRed
+                      : '#4A4A4A'
+                    : isActive
+                      ? cinnabarRed
+                      : 'rgba(255,255,255,0.85)',
                 }}
               >
-                {item.label}
-                <span
-                  className="absolute bottom-1 left-4 w-0 h-0.5 transition-all duration-300 group-hover:w-8"
-                  style={{ backgroundColor: cinnabarRed }}
-                />
+                <span className="sidebar-item-icon">
+                  <Icon className="size-4" />
+                </span>
+                <span className="sidebar-item-label">{item.label}</span>
               </a>
-            ))}
+            );
+          })}
+        </nav>
+
+        {/* 底部行程信息卡（仅 Sidebar 态显示） */}
+        {scrolled && (
+          <div className="sidebar-info-card">
+            <div className="sidebar-info-icon">
+              <Calendar className="size-4" />
+            </div>
+            <div className="sidebar-info-text">
+              <span className="sidebar-info-date">{TRIP_INFO.date}</span>
+              <span className="sidebar-info-people">{TRIP_INFO.people}</span>
+            </div>
+          </div>
+        )}
+
+        {/* 移动端汉堡按钮 */}
+        <button
+          className="sidebar-mobile-toggle"
+          onClick={() => setMobileOpen((prev) => !prev)}
+          aria-label={mobileOpen ? '关闭菜单' : '打开菜单'}
+          style={{
+            background: 'transparent',
+            border: 'none',
+            cursor: 'pointer',
+            padding: '0.5rem',
+            color: cinnabarRed,
+          }}
+        >
+          {mobileOpen ? <X className="size-5" /> : <Menu className="size-5" />}
+        </button>
+      </div>
+
+      {/* 移动端下拉菜单 */}
+      {mobileOpen && (
+        <nav className="sidebar-mobile-menu">
+          <div className="sidebar-mobile-menu-inner">
+            {NAV_ITEMS.map((item) => {
+              const Icon = item.icon;
+              return (
+                <a
+                  key={item.anchor}
+                  href={item.anchor}
+                  onClick={closeMobile}
+                  className="sidebar-item"
+                  style={{ color: '#4A4A4A' }}
+                >
+                  <span className="sidebar-item-icon">
+                    <Icon className="size-4" />
+                  </span>
+                  <span className="sidebar-item-label">{item.label}</span>
+                </a>
+              );
+            })}
           </div>
         </nav>
       )}

@@ -1,6 +1,6 @@
-import { useState } from 'react';
+import { useState, type MouseEvent } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
-import { Clock, MapPin, Ticket, Bus, ChevronDown, Navigation, ExternalLink, Train, Footprints } from 'lucide-react';
+import { Clock, MapPin, Ticket, Bus, ChevronDown, Navigation, Train, Footprints } from 'lucide-react';
 import { OptimizedImage } from '@/components/OptimizedImage';
 import { useGsapReveal } from '@/hooks/useGsap';
 import { Badge } from '@/components/ui/badge';
@@ -280,6 +280,38 @@ function getAmapNavUrl(name: string, lng: number, lat: number): string {
   return `https://uri.amap.com/marker?position=${lng},${lat}&name=${encodeURIComponent(name)}&callnative=1`;
 }
 
+/**
+ * 移动端导航点击处理：先尝试唤起高德地图App，失败则回退到网页版
+ * - 移动端：用 amapuri:// scheme 唤起App，2秒后未成功则跳转网页版
+ * - PC端：默认行为，直接打开网页版
+ */
+function handleNavClick(e: MouseEvent, name: string, lng: number, lat: number) {
+  const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+  if (!isMobile) return;
+
+  e.preventDefault();
+  const poiname = encodeURIComponent(name);
+  const scheme = `amapuri://navi?sourceApplication=nanjingplan&lat=${lat}&lon=${lng}&dev=0&style=2&poiname=${poiname}`;
+  const webFallback = `https://uri.amap.com/navi?sourceApplication=nanjingplan&lat=${lat}&lon=${lng}&dev=0&style=2&poiname=${poiname}&callnative=1`;
+
+  let appLaunched = false;
+  const onVisChange = () => {
+    if (document.hidden) appLaunched = true;
+  };
+  document.addEventListener('visibilitychange', onVisChange);
+
+  // 尝试唤起App
+  window.location.href = scheme;
+
+  // 2秒后检查是否成功唤起，未成功则回退到网页版
+  setTimeout(() => {
+    document.removeEventListener('visibilitychange', onVisChange);
+    if (!appLaunched) {
+      window.location.href = webFallback;
+    }
+  }, 2000);
+}
+
 function RoutePanel({ spot }: { spot: IItinerarySpot }) {
   const [open, setOpen] = useState(false);
   const routeData = SPOT_ROUTES[spot.name];
@@ -401,11 +433,12 @@ function RoutePanel({ spot }: { spot: IItinerarySpot }) {
                 </div>
               )}
 
-              <a href={navUrl} target="_blank" rel="noreferrer" className="flex w-full items-center justify-center gap-2 rounded-2xl px-6 py-3 text-sm font-bold text-white shadow-lg transition-all duration-300 hover:shadow-xl hover:-translate-y-0.5" style={{ backgroundColor: '#B84233' }} onMouseEnter={(e) => e.currentTarget.style.backgroundColor = '#9A372B'} onMouseLeave={(e) => e.currentTarget.style.backgroundColor = '#B84233'}
+              <a href={navUrl} target="_blank" rel="noreferrer" className="cssbuttons-io-button" onClick={(e) => handleNavClick(e, spot.name, routeData.coordinates.lng, routeData.coordinates.lat)}
               >
-                <Navigation className="size-4" />
                 一键导航到「{spot.name}」
-                <ExternalLink className="size-3 opacity-60" />
+                <div className="icon">
+                  <Navigation />
+                </div>
               </a>
             </div>
           </motion.div>
@@ -465,7 +498,7 @@ function SpotCard({ spot, index, dayColor }: { spot: IItinerarySpot; index: numb
                     {spot.transport}
                   </span>
                   {routeData && (
-                    <a href={getAmapNavUrl(spot.name, routeData.coordinates.lng, routeData.coordinates.lat)} target="_blank" rel="noreferrer" className="flex items-center gap-1 rounded-full bg-slate-100 px-2.5 py-0.5 text-[10px] font-bold uppercase tracking-widest text-slate-500 transition-colors hover:bg-slate-200"
+                    <a href={getAmapNavUrl(spot.name, routeData.coordinates.lng, routeData.coordinates.lat)} target="_blank" rel="noreferrer" className="flex items-center gap-1 rounded-full bg-slate-100 px-2.5 py-0.5 text-[10px] font-bold uppercase tracking-widest text-slate-500 transition-colors hover:bg-slate-200" onClick={(e) => handleNavClick(e, spot.name, routeData.coordinates.lng, routeData.coordinates.lat)}
                     >
                       <Navigation className="size-3" />
                       导航
