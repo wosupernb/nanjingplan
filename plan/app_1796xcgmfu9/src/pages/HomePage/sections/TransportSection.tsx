@@ -97,9 +97,9 @@ export default function TransportSection() {
                 </div>
 
                 {/* Route display — ticket-style */}
-                <div className="relative flex items-center justify-between mb-8 px-1">
+                <div className="relative flex items-center mb-8 px-1">
                   {/* Departure */}
-                  <div className="text-center">
+                  <div className="shrink-0 text-center">
                     <p className="text-4xl md:text-5xl font-light tracking-tight text-slate-900 tabular-nums serif-font">
                       {t.departureTime}
                     </p>
@@ -109,23 +109,23 @@ export default function TransportSection() {
                   </div>
 
                   {/* Arrow + duration */}
-                  <div className="flex flex-col items-center gap-2">
-                    <div className="flex items-center gap-1">
-                      <span className="block w-8 md:w-12 h-px bg-slate-200" />
+                  <div className="flex-1 flex flex-col items-center gap-2 px-2 min-w-0">
+                    <div className="flex items-center gap-1 w-full justify-center">
+                      <span className="block flex-1 h-px bg-slate-200" />
                       <ArrowRight className="size-3 text-slate-300 shrink-0" />
-                      <span className="block w-8 md:w-12 h-px bg-slate-200" />
+                      <span className="block flex-1 h-px bg-slate-200" />
                     </div>
-                    <span className="text-[10px] font-bold text-slate-400 uppercase tracking-[0.25em]">
+                    <span className="text-[10px] font-bold text-slate-400 uppercase tracking-[0.25em] whitespace-nowrap">
                       {t.duration}
                     </span>
                   </div>
 
                   {/* Arrival */}
-                  <div className="text-center">
+                  <div className="shrink-0 text-center">
                     <p className="text-4xl md:text-5xl font-light tracking-tight text-slate-900 tabular-nums serif-font">
                       {t.arrivalTime.replace(' (+1天)', '')}
                     </p>
-                    <p className="text-xs font-medium text-slate-400 mt-2 uppercase tracking-wider">
+                    <p className="text-xs font-medium text-slate-400 mt-2 uppercase tracking-wider whitespace-nowrap">
                       {t.route.split(' → ')[1]}
                     </p>
                   </div>
