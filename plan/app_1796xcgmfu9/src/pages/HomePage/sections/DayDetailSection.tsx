@@ -294,22 +294,25 @@ function handleNavClick(e: MouseEvent, name: string, lng: number, lat: number) {
   const scheme = `amapuri://navi?sourceApplication=nanjingplan&lat=${lat}&lon=${lng}&dev=0&style=2&poiname=${poiname}`;
   const webFallback = `https://uri.amap.com/navi?sourceApplication=nanjingplan&lat=${lat}&lon=${lng}&dev=0&style=2&poiname=${poiname}&callnative=1`;
 
-  let appLaunched = false;
-  const onVisChange = () => {
-    if (document.hidden) appLaunched = true;
-  };
-  document.addEventListener('visibilitychange', onVisChange);
-
-  // 尝试唤起App
-  window.location.href = scheme;
-
-  // 2秒后检查是否成功唤起，未成功则回退到网页版
+  // 移动端：等待按钮动画完整播放后再跳转（active 缩放 0.3s + 回弹）
   setTimeout(() => {
-    document.removeEventListener('visibilitychange', onVisChange);
-    if (!appLaunched) {
-      window.location.href = webFallback;
-    }
-  }, 2000);
+    let appLaunched = false;
+    const onVisChange = () => {
+      if (document.hidden) appLaunched = true;
+    };
+    document.addEventListener('visibilitychange', onVisChange);
+
+    // 尝试唤起App
+    window.location.href = scheme;
+
+    // 2秒后检查是否成功唤起，未成功则回退到网页版
+    setTimeout(() => {
+      document.removeEventListener('visibilitychange', onVisChange);
+      if (!appLaunched) {
+        window.location.href = webFallback;
+      }
+    }, 2000);
+  }, 400);
 }
 
 function RoutePanel({ spot }: { spot: IItinerarySpot }) {
