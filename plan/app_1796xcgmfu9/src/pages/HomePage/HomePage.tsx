@@ -1,4 +1,3 @@
-import { useState, useCallback } from 'react';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import HeroSection from '@/pages/HomePage/sections/HeroSection';
@@ -11,25 +10,11 @@ import TipsSection from '@/pages/HomePage/sections/TipsSection';
 import ChecklistSection from '@/pages/HomePage/sections/ChecklistSection';
 
 export default function HomePage() {
-  const [sidebarMargin, setSidebarMargin] = useState(0);
-
-  const handleSidebarStateChange = useCallback(
-    ({ scrolled, expanded }: { scrolled: boolean; expanded: boolean }) => {
-      // 桌面端：sidebar 激活时让出对应 margin
-      if (scrolled && window.innerWidth >= 769) {
-        setSidebarMargin(expanded ? 240 : 64);
-      } else {
-        setSidebarMargin(0);
-      }
-    },
-    []
-  );
-
   return (
     <div className="min-h-screen" style={{ backgroundColor: '#FBF8F3' }}>
-      <Header onStateChange={handleSidebarStateChange} />
+      <Header />
 
-      <main className="sidebar-content" style={{ marginLeft: `${sidebarMargin}px` }}>
+      <main>
         <section id="hero" className="w-full">
           <HeroSection />
         </section>
