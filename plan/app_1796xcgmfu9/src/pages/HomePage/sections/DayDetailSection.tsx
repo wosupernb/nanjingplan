@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef, type MouseEvent, type RefObject } from 'react';
+import { useState, type MouseEvent } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 import { Clock, MapPin, Ticket, Bus, ChevronDown, Navigation, Train, Footprints } from 'lucide-react';
 import { OptimizedImage } from '@/components/OptimizedImage';
@@ -312,48 +312,12 @@ function handleNavClick(e: MouseEvent, name: string, lng: number, lat: number) {
   }, 2000);
 }
 
-function RoutePanel({ spot, containerRef }: { spot: IItinerarySpot; containerRef: RefObject<HTMLDivElement | null> }) {
+function RoutePanel({ spot }: { spot: IItinerarySpot }) {
   const [open, setOpen] = useState(false);
   const routeData = SPOT_ROUTES[spot.name];
   if (!routeData) return null;
 
   const navUrl = getAmapNavUrl(spot.name, routeData.coordinates.lng, routeData.coordinates.lat);
-
-  // 自动折叠：景点容器离开视口时，延迟 300ms 折叠（方案 B 防抖）
-  // 若 300ms 内容器重新进入视口，则取消折叠，避免 scrollIntoView 误触发
-  useEffect(() => {
-    if (!open) return;
-    const el = containerRef.current;
-    if (!el) return;
-
-    let collapseTimer: ReturnType<typeof setTimeout> | null = null;
-
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (!entry.isIntersecting) {
-          // 离开视口，延迟 300ms 折叠
-          if (collapseTimer === null) {
-            collapseTimer = setTimeout(() => {
-              setOpen(false);
-            }, 300);
-          }
-        } else {
-          // 重新进入视口，取消折叠
-          if (collapseTimer !== null) {
-            clearTimeout(collapseTimer);
-            collapseTimer = null;
-          }
-        }
-      },
-      { threshold: 0 }
-    );
-
-    observer.observe(el);
-    return () => {
-      observer.disconnect();
-      if (collapseTimer !== null) clearTimeout(collapseTimer);
-    };
-  }, [open, containerRef]);
 
   return (
     <div className="mt-4 border-t border-slate-100 pt-4">
@@ -561,7 +525,7 @@ function SpotCard({ spot, index, dayColor }: { spot: IItinerarySpot; index: numb
               </div>
             )}
 
-            <RoutePanel spot={spot} containerRef={cardRef} />
+            <RoutePanel spot={spot} />
           </div>
         </div>
       </div>
