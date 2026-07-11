@@ -294,7 +294,11 @@ function handleNavClick(e: MouseEvent, name: string, lng: number, lat: number) {
   const scheme = `amapuri://navi?sourceApplication=nanjingplan&lat=${lat}&lon=${lng}&dev=0&style=2&poiname=${poiname}`;
   const webFallback = `https://uri.amap.com/navi?sourceApplication=nanjingplan&lat=${lat}&lon=${lng}&dev=0&style=2&poiname=${poiname}&callnative=1`;
 
-  // 移动端：等待按钮动画完整播放后再跳转（active 缩放 0.3s + 回弹）
+  // 移动端：添加 .activated 类触发图标伸展动画，等待动画完整播放后再跳转
+  const btn = e.currentTarget as HTMLAnchorElement;
+  btn.classList.add('activated');
+
+  // 伸展动画 0.3s + 回弹缓冲 0.2s = 500ms 完整播放
   setTimeout(() => {
     let appLaunched = false;
     const onVisChange = () => {
@@ -312,7 +316,12 @@ function handleNavClick(e: MouseEvent, name: string, lng: number, lat: number) {
         window.location.href = webFallback;
       }
     }, 2000);
-  }, 400);
+  }, 500);
+
+  // 跳转后移除 .activated 类，确保返回网站时按钮已复位
+  setTimeout(() => {
+    btn.classList.remove('activated');
+  }, 800);
 }
 
 function RoutePanel({ spot }: { spot: IItinerarySpot }) {

@@ -95,3 +95,12 @@
 .cssbuttons-io-button:active .icon {
   transform: scale(0.95);
 }
+
+/* 移动端点击触发态：JS 添加 .activated 类播放完整伸展动画（不受 hover: none 影响） */
+.cssbuttons-io-button.activated .icon {
+  width: calc(100% - 0.6em);
+}
+
+.cssbuttons-io-button.activated .icon svg {
+  transform: translateX(0.1em);
+}
